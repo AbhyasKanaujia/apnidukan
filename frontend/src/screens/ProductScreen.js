@@ -19,7 +19,7 @@ import { listProductDetails } from '../actions/productActions'
 const ProductScreen = () => {
   const id = useParams().id
   const navigate = useNavigate()
-  const [qty, setQty] = useState(0)
+  const [qty, setQty] = useState(1)
   const dispatch = useDispatch()
   const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
@@ -110,7 +110,7 @@ const ProductScreen = () => {
                       onClick={addToCartHandler}
                       className='col-12'
                       type='button'
-                      disabled={product.countInStock === 0 || qty === 0}
+                      disabled={product.countInStock === 0}
                     >
                       Add to Cart
                     </Button>
