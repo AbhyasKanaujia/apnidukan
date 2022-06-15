@@ -110,7 +110,7 @@ const ProductScreen = () => {
                       onClick={addToCartHandler}
                       className='col-12'
                       type='button'
-                      disabled={product.countInStock === 0}
+                      disabled={product.countInStock === 0 || qty === 0}
                     >
                       Add to Cart
                     </Button>
