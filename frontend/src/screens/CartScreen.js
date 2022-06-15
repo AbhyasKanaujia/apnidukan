@@ -16,7 +16,7 @@ import Message from '../components/Message'
 
 const CartScreen = () => {
   const location = useLocation()
-  const params = useParams().id
+  const params = useParams()
   const navigate = useNavigate()
 
   const dispatch = useDispatch()
