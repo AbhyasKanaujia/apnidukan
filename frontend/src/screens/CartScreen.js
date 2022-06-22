@@ -1,28 +1,28 @@
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
-import { addToCart, removeFromCart } from '../actions/cartActions'
 import {
+  Row,
+  Col,
+  ListGroup,
+  Image,
+  Form,
   Button,
   Card,
-  Col,
-  Form,
-  Image,
-  ListGroup,
   ListGroupItem,
-  Row,
 } from 'react-bootstrap'
 import Message from '../components/Message'
+import { addToCart, removeFromCart } from '../actions/cartActions'
+import { useDispatch, useSelector } from 'react-redux'
 
 const CartScreen = () => {
   const location = useLocation()
   const params = useParams()
   const navigate = useNavigate()
 
-  const dispatch = useDispatch()
-
-  const qty = location.search ? Number(location.search.split('=')[1]) : 1
   const productId = params.id
+  const qty = location.search ? Number(location.search.split('=')[1]) : 1
+
+  const dispatch = useDispatch()
 
   const { cartItems } = useSelector((state) => state.cart)
 
@@ -46,9 +46,11 @@ const CartScreen = () => {
       <Row>
         <Col md={8}>
           {cartItems.length === 0 ? (
-            <Message>Your cart is empty</Message>
+            <Message>
+              Your cart is empty <Link to='/'>Go Back</Link>
+            </Message>
           ) : (
-            <ListGroup>
+            <ListGroup variant='flush'>
               {cartItems.map((item) => (
                 <ListGroupItem key={item.product}>
                   <Row>
@@ -59,7 +61,7 @@ const CartScreen = () => {
                       <Link to={`/product/${item.product}`}>{item.name}</Link>
                     </Col>
                     <Col md={2}>${item.price}</Col>
-                    <Col>
+                    <Col md={3}>
                       <Form.Control
                         as='select'
                         value={item.qty}
@@ -111,7 +113,7 @@ const CartScreen = () => {
                   disabled={cartItems.length === 0}
                   onClick={checkOutHandler}
                 >
-                  Proceed to Checkout
+                  Proceed To Checkout
                 </Button>
               </ListGroup.Item>
             </ListGroup>

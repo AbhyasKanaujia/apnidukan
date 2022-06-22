@@ -1,26 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  Row,
-  Col,
-  Image,
-  ListGroup,
-  Card,
-  Button,
-  ListGroupItem,
-  Form,
-} from 'react-bootstrap'
-import Loader from '../components/Loader'
+import { Row, Col, Image, ListGroup, Card, Button, Form } from 'react-bootstrap'
 import Rating from '../components/Rating'
 import Message from '../components/Message'
+import Loader from '../components/Loader'
 import { listProductDetails } from '../actions/productActions'
 
 const ProductScreen = () => {
   const id = useParams().id
   const navigate = useNavigate()
+
   const [qty, setQty] = useState(1)
+
   const dispatch = useDispatch()
+
   const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
 
@@ -68,7 +62,7 @@ const ProductScreen = () => {
               <ListGroup variant='flush'>
                 <ListGroup.Item>
                   <Row>
-                    <Col>Price</Col>
+                    <Col>Price:</Col>
                     <Col>
                       <strong>${product.price}</strong>
                     </Col>
@@ -76,11 +70,9 @@ const ProductScreen = () => {
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
-                    <Col>Status</Col>
+                    <Col>Status:</Col>
                     <Col>
-                      <strong>
-                        {product.countInStock > 0 ? 'In Stock' : 'Out of Stock'}
-                      </strong>
+                      {product.countInStock > 0 ? 'In Stock' : 'Out of Stock'}
                     </Col>
                   </Row>
                 </ListGroup.Item>
