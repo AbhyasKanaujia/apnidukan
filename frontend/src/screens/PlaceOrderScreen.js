@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { createOrder } from '../actions/orderActions'
 
-const PlaceOrder = () => {
+const PlaceOrderScreen = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -161,4 +161,4 @@ const PlaceOrder = () => {
   )
 }
 
-export default PlaceOrder
+export default PlaceOrderScreen
