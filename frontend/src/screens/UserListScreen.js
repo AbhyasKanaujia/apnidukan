@@ -39,8 +39,8 @@ const UserListScreen = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => {
-              ;<tr key={user._id}>
+            {users.map((user) => (
+              <tr key={user._id}>
                 <td>{user._id}</td>
                 <td>{user.name}</td>
                 <td>
@@ -56,7 +56,7 @@ const UserListScreen = () => {
                 <td>
                   <LinkContainer to={`/user/${user._id}/edit`}>
                     <Button variant='light' className='btn-sm'>
-                      <i className='fas fas-edit'></i>
+                      <i className='fas fa-edit'></i>
                     </Button>
                   </LinkContainer>
                   <Button
@@ -68,7 +68,7 @@ const UserListScreen = () => {
                   </Button>
                 </td>
               </tr>
-            })}
+            ))}
           </tbody>
         </Table>
       )}
