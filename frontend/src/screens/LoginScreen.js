@@ -20,7 +20,6 @@ const LoginScreen = () => {
   const navigate = useNavigate()
 
   const redirect = location.search ? `/${location.search.split('=')[1]}` : '/'
-  console.log(redirect)
 
   useEffect(() => {
     if (userInfo) {

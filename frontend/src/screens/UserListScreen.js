@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -20,7 +20,7 @@ const UserListScreen = () => {
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) dispatch(listUsers())
     else navigate('/login')
-  }, [dispatch, listUsers])
+  }, [dispatch, navigate, userInfo])
 
   const deleteHandler = (id) => {
     console.log('delete', id)
