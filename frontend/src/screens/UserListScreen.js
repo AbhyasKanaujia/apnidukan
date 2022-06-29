@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { LinkContainer } from 'react-router-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
-import { Button, Table } from 'react-bootstrap'
-import Loader from '../components/Loader'
-import Message from '../components/Message'
-import { listUsers } from '../actions/userActions'
+import React, { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import { LinkContainer } from "react-router-bootstrap"
+import { useDispatch, useSelector } from "react-redux"
+import { Button, Table } from "react-bootstrap"
+import Loader from "../components/Loader"
+import Message from "../components/Message"
+import { listUsers, deleteUser } from "../actions/userActions"
 
 const UserListScreen = () => {
   const dispatch = useDispatch()
@@ -17,13 +17,18 @@ const UserListScreen = () => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
+  const userDelete = useSelector((state) => state.userDelete)
+  const { success: successDelete } = userDelete
+
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) dispatch(listUsers())
-    else navigate('/login')
-  }, [dispatch, navigate, userInfo])
+    else navigate("/login")
+  }, [dispatch, navigate, userInfo, successDelete])
 
   const deleteHandler = (id) => {
-    console.log('delete', id)
+    if (window.confirm("Are you sure")) {
+      dispatch(deleteUser(id))
+    }
   }
 
   return (
@@ -54,9 +59,9 @@ const UserListScreen = () => {
                 </td>
                 <td>
                   {user.isAdmin ? (
-                    <i className='fas fa-check' style={{ color: 'green' }}></i>
+                    <i className='fas fa-check' style={{ color: "green" }}></i>
                   ) : (
-                    <i className='fas fa-times' style={{ color: 'red' }}></i>
+                    <i className='fas fa-times' style={{ color: "red" }}></i>
                   )}
                 </td>
                 <td>
