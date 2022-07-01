@@ -40,7 +40,7 @@ const ProductListScreen = () => {
   useEffect(() => {
     dispatch({ type: PRODUCT_CREATE_RESET })
 
-    if (!userInfo.isAdmin) {
+    if (!userInfo || !userInfo.isAdmin) {
       navigate('/login')
     }
 
@@ -90,7 +90,7 @@ const ProductListScreen = () => {
         <Message variant='danger'>{error}</Message>
       ) : (
         <>
-          <Table striped hover responsive className='table-sm'>
+          <Table striped bordered hover responsive className='table-sm'>
             <thead>
               <tr>
                 <th>ID</th>
@@ -106,7 +106,7 @@ const ProductListScreen = () => {
                 <tr key={product._id}>
                   <td>{product._id}</td>
                   <td>{product.name}</td>
-                  <td>$ {product.price}</td>
+                  <td>${product.price}</td>
                   <td>{product.category}</td>
                   <td>{product.brand}</td>
                   <td>
