@@ -213,7 +213,7 @@ const OrderScreen = () => {
                 </ListGroup.Item>
               )}
               {loadingDeliver && <Loader />}
-              {userInfor &&
+              {userInfo &&
                 userInfo.isAdmin &&
                 order.isPaid &&
                 !order.isDelivered && (

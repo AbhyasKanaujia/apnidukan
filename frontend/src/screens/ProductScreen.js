@@ -10,6 +10,7 @@ import {
   createProductReview,
 } from '../actions/productActions'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
+import Meta from '../components/Meta'
 
 const ProductScreen = () => {
   const id = useParams().id
@@ -66,6 +67,11 @@ const ProductScreen = () => {
         <Message variant='danger'>{error}</Message>
       ) : (
         <>
+          <Meta
+            title={product.name}
+            description={product.description}
+            keywords={`cheap ${product.category}, best ${product.category} product`}
+          />
           <Row>
             <Col md={6}>
               <Image src={product.image} alt={product.name} fluid />
