@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react"
-import FormContainer from "../components/FormContainer"
-import { useDispatch, useSelector } from "react-redux"
-import { Button, Form } from "react-bootstrap"
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
-import { getUserDetails, updateUser } from "../actions/userActions"
-import Loader from "../components/Loader"
-import Message from "../components/Message"
-import { USER_UPDATE_RESET } from "../constants/userConstants"
+import React, { useEffect, useState } from 'react'
+import FormContainer from '../components/FormContainer'
+import { useDispatch, useSelector } from 'react-redux'
+import { Button, Form } from 'react-bootstrap'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { getUserDetails, updateUser } from '../actions/userActions'
+import Loader from '../components/Loader'
+import Message from '../components/Message'
+import { USER_UPDATE_RESET } from '../constants/userConstants'
 
 const UserEditScreen = () => {
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
   const [isAdmin, setIsAdmin] = useState(false)
 
   const dispatch = useDispatch()
@@ -25,7 +25,6 @@ const UserEditScreen = () => {
     success: successUpdate,
   } = userUpdate
 
-  const location = useLocation()
   const navigate = useNavigate()
   const params = useParams()
 
@@ -34,7 +33,7 @@ const UserEditScreen = () => {
   useEffect(() => {
     if (successUpdate) {
       dispatch({ type: USER_UPDATE_RESET })
-      navigate("/admin/userlist")
+      navigate('/admin/userlist')
     } else {
       if (!user || !user.name || user._id !== userId) {
         dispatch(getUserDetails(userId))
