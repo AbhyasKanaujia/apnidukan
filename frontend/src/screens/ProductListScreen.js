@@ -5,19 +5,24 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button, Table, Row, Col } from 'react-bootstrap'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import Paginate from '../components/Paginate'
 import {
   listProducts,
   deleteProduct,
   createProduct,
 } from '../actions/productActions'
 import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
+import { useParams } from 'react-router-dom'
 
 const ProductListScreen = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const params = useParams()
+
+  const pageNumber = params.pageNumber || 1
 
   const productList = useSelector((state) => state.productList)
-  const { loading, error, products } = productList
+  const { loading, error, products, page, pages } = productList
 
   const productDelete = useSelector((state) => state.productDelete)
   const {
@@ -47,7 +52,7 @@ const ProductListScreen = () => {
     if (successCreate) {
       navigate(`/admin/product/${createdProduct._id}/edit`)
     } else {
-      dispatch(listProducts())
+      dispatch(listProducts('', pageNumber))
     }
   }, [
     dispatch,
@@ -56,6 +61,7 @@ const ProductListScreen = () => {
     successDelete,
     successCreate,
     createdProduct,
+    pageNumber,
   ])
 
   const deleteHandler = (id) => {
@@ -106,7 +112,7 @@ const ProductListScreen = () => {
                 <tr key={product._id}>
                   <td>{product._id}</td>
                   <td>{product.name}</td>
-                  <td>${product.price}</td>
+                  <td>₹{product.price}</td>
                   <td>{product.category}</td>
                   <td>{product.brand}</td>
                   <td>
@@ -127,6 +133,7 @@ const ProductListScreen = () => {
               ))}
             </tbody>
           </Table>
+          <Paginate pages={pages} page={page} isAdmin />
         </>
       )}
     </>

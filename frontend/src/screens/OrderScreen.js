@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { useDispatch, useSelector } from 'react-redux'
@@ -142,7 +142,7 @@ const OrderScreen = () => {
                           </Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} x ${item.price} = ${item.qty * item.price}
+                          {item.qty} x ₹{item.price} = ₹{item.qty * item.price}
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -161,25 +161,25 @@ const OrderScreen = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>Items</Col>
-                  <Col>${addDecimals(order.itemsPrice)}</Col>
+                  <Col>₹{addDecimals(order.itemsPrice)}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Shipping</Col>
-                  <Col>${addDecimals(order.shippingPrice)}</Col>
+                  <Col>₹{addDecimals(order.shippingPrice)}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Tax</Col>
-                  <Col>${addDecimals(order.taxPrice)}</Col>
+                  <Col>₹{addDecimals(order.taxPrice)}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>${addDecimals(order.totalPrice)}</Col>
+                  <Col>₹{addDecimals(order.totalPrice)}</Col>
                 </Row>
               </ListGroup.Item>
               {!order.isPaid && (
