@@ -1,11 +1,11 @@
-import React, { useEffect } from "react"
-import { useNavigate } from "react-router-dom"
-import { LinkContainer } from "react-router-bootstrap"
-import { useDispatch, useSelector } from "react-redux"
-import { Button, Table } from "react-bootstrap"
-import Loader from "../components/Loader"
-import Message from "../components/Message"
-import { listUsers, deleteUser } from "../actions/userActions"
+import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { LinkContainer } from 'react-router-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { Button, Table } from 'react-bootstrap'
+import Loader from '../components/Loader'
+import Message from '../components/Message'
+import { listUsers, deleteUser } from '../actions/userActions'
 
 const UserListScreen = () => {
   const dispatch = useDispatch()
@@ -22,11 +22,11 @@ const UserListScreen = () => {
 
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) dispatch(listUsers())
-    else navigate("/login")
+    else navigate('/login')
   }, [dispatch, navigate, userInfo, successDelete])
 
   const deleteHandler = (id) => {
-    if (window.confirm("Are you sure")) {
+    if (window.confirm('Are you sure')) {
       dispatch(deleteUser(id))
     }
   }
@@ -45,6 +45,8 @@ const UserListScreen = () => {
               <th>ID</th>
               <th>NAME</th>
               <th>EMAIL</th>
+              <th>PHONE</th>
+              <th>ADDRESS</th>
               <th>IS ADMIN</th>
               <th></th>
             </tr>
@@ -57,11 +59,13 @@ const UserListScreen = () => {
                 <td>
                   <a href={`mailto:${user.email}`}>{user.email}</a>
                 </td>
+                <td>{user.phone}</td>
+                <td>{user.address}</td>
                 <td>
                   {user.isAdmin ? (
-                    <i className='fas fa-check' style={{ color: "green" }}></i>
+                    <i className='fas fa-check' style={{ color: 'green' }}></i>
                   ) : (
-                    <i className='fas fa-times' style={{ color: "red" }}></i>
+                    <i className='fas fa-times' style={{ color: 'red' }}></i>
                   )}
                 </td>
                 <td>
