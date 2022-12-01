@@ -58,14 +58,16 @@ const deleteProduct = asyncHandler(async (req, res) => {
 // @route   POST /api/products
 // @access  Private/Admin
 const createProduct = asyncHandler(async (req, res) => {
+  const location = { type: 'Point', coordinate: req.user.location.coordinates }
   const product = new Product({
     name: 'Sample name',
     price: 0,
     user: req.user._id,
+    location,
     image: '/images/sample.png',
     brand: 'Sample brand',
     category: 'Sample category',
-    countInStock: 0,
+    countInStock: 1,
     numReviews: 0,
     description: 'Sample description',
   })

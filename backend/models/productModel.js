@@ -62,6 +62,17 @@ const productSchema = mongoose.Schema(
       required: true,
       default: 0,
     },
+    location: {
+      type: {
+        type: String,
+        enum: ['Point'],
+        required: true,
+      },
+      coordinates: {
+        type: [Number],
+        required: true,
+      },
+    },
   },
   {
     timestamps: true,
