@@ -28,7 +28,7 @@ const userSchema = mongoose.Schema(
       type: {
         type: String,
         enum: ['Point'],
-        required: true,
+        required: [true, 'User location type must be point'],
       },
       coordinates: {
         type: [Number],
@@ -38,7 +38,7 @@ const userSchema = mongoose.Schema(
     isAdmin: {
       type: Boolean,
       required: true,
-      default: false,
+      default: true,
     },
   },
   {

@@ -66,7 +66,7 @@ const productSchema = mongoose.Schema(
       type: {
         type: String,
         enum: ['Point'],
-        required: true,
+        required: [true, 'Product location type must be point'],
       },
       coordinates: {
         type: [Number],
