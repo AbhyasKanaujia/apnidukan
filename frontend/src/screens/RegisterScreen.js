@@ -12,6 +12,7 @@ const RegisterScreen = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [coordinate, setCoordinate] = useState([])
   const [message, setMessage] = useState(null)
 
   const dispatch = useDispatch()
@@ -30,10 +31,16 @@ const RegisterScreen = () => {
     }
   }, [redirect, userInfo, navigate])
 
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((location) =>
+      setCoordinate([location.coords.latitude, location.coords.longitude])
+    )
+  }, [])
+
   const submitHandler = (e) => {
     e.preventDefault()
     if (password !== confirmPassword) setMessage('Passwords do not match')
-    else dispatch(register(name, email, password, confirmPassword))
+    else dispatch(register(name, email, password, confirmPassword, coordinate))
   }
 
   return (

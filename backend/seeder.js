@@ -6,6 +6,11 @@ import products from './data/products.js'
 import User from './models/userModel.js'
 import Product from './models/productModel.js'
 import Order from './models/orderModel.js'
+import IndianNames from './data/Indian_Names.csv'
+import fs from 'fs'
+const indianMaleName = fs.readFileSync(IndianNames)
+indianMaleName = indianMaleName.toString().split('\r')
+console.log(indianMaleName)
 
 import connectDB from './config/db.js'
 

@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from 'axios'
 import {
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
@@ -24,9 +24,9 @@ import {
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
   USER_UPDATE_FAIL,
-} from "../constants/userConstants"
+} from '../constants/userConstants'
 
-import { ORDER_LIST_MY_RESET } from "../constants/orderConstants"
+import { ORDER_LIST_MY_RESET } from '../constants/orderConstants'
 
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -36,12 +36,12 @@ export const login = (email, password) => async (dispatch) => {
 
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     }
 
     const { data } = await axios.post(
-      "/api/users/login",
+      '/api/users/login',
       { email, password },
       config
     )
@@ -51,7 +51,7 @@ export const login = (email, password) => async (dispatch) => {
       payload: data,
     })
 
-    localStorage.setItem("userInfo", JSON.stringify(data))
+    localStorage.setItem('userInfo', JSON.stringify(data))
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
@@ -63,45 +63,46 @@ export const login = (email, password) => async (dispatch) => {
   }
 }
 
-export const register = (name, email, password) => async (dispatch) => {
-  try {
-    dispatch({
-      type: USER_REGISTER_REQUEST,
-    })
+export const register =
+  (name, email, password, coordinate) => async (dispatch) => {
+    try {
+      dispatch({
+        type: USER_REGISTER_REQUEST,
+      })
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+
+      const { data } = await axios.post(
+        '/api/users',
+        { name, email, password, coordinate },
+        config
+      )
+
+      dispatch({
+        type: USER_REGISTER_SUCCESS,
+        payload: data,
+      })
+
+      dispatch({
+        type: USER_LOGIN_SUCCESS,
+        payload: data,
+      })
+
+      localStorage.setItem('userInfo', JSON.stringify(data))
+    } catch (error) {
+      dispatch({
+        type: USER_REGISTER_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
     }
-
-    const { data } = await axios.post(
-      "/api/users",
-      { name, email, password },
-      config
-    )
-
-    dispatch({
-      type: USER_REGISTER_SUCCESS,
-      payload: data,
-    })
-
-    dispatch({
-      type: USER_LOGIN_SUCCESS,
-      payload: data,
-    })
-
-    localStorage.setItem("userInfo", JSON.stringify(data))
-  } catch (error) {
-    dispatch({
-      type: USER_REGISTER_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    })
   }
-}
 
 export const getUserDetails = (id) => async (dispatch, getState) => {
   try {
@@ -148,7 +149,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${userInfo.token}`,
       },
     }
@@ -165,7 +166,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
       payload: data,
     })
 
-    localStorage.setItem("userInfo", JSON.stringify(data))
+    localStorage.setItem('userInfo', JSON.stringify(data))
   } catch (error) {
     dispatch({
       type: USER_UPDATE_PROFILE_FAIL,
@@ -252,7 +253,7 @@ export const updateUser = (user) => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${userInfo.token}`,
       },
     }
@@ -276,7 +277,7 @@ export const updateUser = (user) => async (dispatch, getState) => {
 }
 
 export const logout = () => (dispatch) => {
-  localStorage.removeItem("userInfo")
+  localStorage.removeItem('userInfo')
   dispatch({ type: USER_LOGOUT })
   dispatch({ type: USER_DETAILS_RESET })
   dispatch({ type: ORDER_LIST_MY_RESET })

@@ -4,23 +4,22 @@
 
 ## Tech Used
 
-* React.js - Frontend
-* Node.js - Backend
-* Express - Web Server
-* MongoDB - Database
-* Mongoose - Database Object Models
-* Redux - State Management
-* Bootstrap - UI Design
-* Heroku - Deployment
+- React.js - Frontend
+- Node.js - Backend
+- Express - Web Server
+- MongoDB - Database
+- Mongoose - Database Object Models
+- Redux - State Management
+- Bootstrap - UI Design
+- Heroku - Deployment
 
 [Demo](https://apnidukanabhyas.herokuapp.com/)
 
 ![Screenshot](https://user-images.githubusercontent.com/44172451/177052658-a52e4101-087c-44ca-af4f-def34ba4beb8.png)
 
-
 ## Features
 
-- Full featured shopping cart
+- Full-featured shopping cart
 - Product reviews and ratings
 - Top products carousel
 - Product pagination
@@ -38,9 +37,9 @@
 
 ### Env Variables
 
-Create a .env file in then root and add the following
+Create a .env file in the root and add the following
 
-```
+```toml
 NODE_ENV = development
 PORT = 5000
 MONGO_URI = your mongodb uri
@@ -59,6 +58,7 @@ npm install
 ### Run
 
 ```bash
+# From the root of the project
 # Run frontend (:3000) & backend (:5000)
 npm run dev
 
@@ -74,7 +74,7 @@ cd frontend
 npm run build
 ```
 
-There is a Heroku postbuild script, so if you push to Heroku, no need to build manually for deployment to Heroku
+There is a Heroku post build script, so if you push to Heroku, no need to build manually for deployment to Heroku
 
 ### Seed Database
 
