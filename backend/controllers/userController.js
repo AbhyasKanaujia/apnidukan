@@ -15,6 +15,9 @@ const authUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      phone: user.phone,
+      address: user.address,
+      location: user.location,
       isAdmin: user.isAdmin,
       token: generateToken(user._id),
     })
@@ -28,7 +31,7 @@ const authUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, coordinate } = req.body
+  const { name, email, password, phone, address, coordinate } = req.body
 
   const location = { type: 'Point', coordinate }
 
@@ -42,6 +45,8 @@ const registerUser = asyncHandler(async (req, res) => {
   const user = await User.create({
     name,
     email,
+    phone,
+    address,
     password,
     location,
   })
@@ -71,6 +76,9 @@ const getUserProfile = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      phone: user.phone,
+      address: user.address,
+      location: user.location,
       isAdmin: user.isAdmin,
     })
   } else {
@@ -98,6 +106,9 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
+      phone: updatedUser.phone,
+      address: updatedUser.address,
+      location: updatedUser.location,
       isAdmin: updatedUser.isAdmin,
       token: generateToken(updatedUser._id),
     })
@@ -161,6 +172,9 @@ const updateUser = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
+      phone: updatedUser.phone,
+      address: updatedUser.address,
+      location: updatedUser.location,
       isAdmin: updatedUser.isAdmin,
     })
   } else {

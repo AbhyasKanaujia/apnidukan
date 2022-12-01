@@ -18,8 +18,14 @@ import UserEditScreen from './screens/UserEditScreen'
 import ProductListScreen from './screens/ProductListScreen'
 import ProductEditScreen from './screens/ProductEditScreen'
 import OrderListScreen from './screens/OrderListScreen'
+import Radar from 'radar-sdk-js'
+import { useSelector } from 'react-redux'
 
 const App = () => {
+  Radar.initialize('prj_live_pk_0d956a31ce723bf9126e2b08c829408cc6ccd654')
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+  Radar.setUserId(userInfo ? userInfo._id : 0)
   return (
     <Router>
       <Header />

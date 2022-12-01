@@ -12,14 +12,17 @@ const userSchema = mongoose.Schema(
       required: true,
       unique: true,
     },
-    password: {
+    phone: {
       type: String,
       required: true,
     },
-    isAdmin: {
-      type: Boolean,
+    address: {
+      type: String,
       required: true,
-      default: false,
+    },
+    password: {
+      type: String,
+      required: true,
     },
     location: {
       type: {
@@ -31,6 +34,11 @@ const userSchema = mongoose.Schema(
         type: [Number],
         required: true,
       },
+    },
+    isAdmin: {
+      type: Boolean,
+      required: true,
+      default: false,
     },
   },
   {
