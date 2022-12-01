@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,6 +15,8 @@ import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
 import { useParams } from 'react-router-dom'
 
 const ProductListScreen = () => {
+  const [userProducts, setUserProducts] = useState([])
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const params = useParams()
@@ -64,6 +66,10 @@ const ProductListScreen = () => {
     pageNumber,
   ])
 
+  useEffect(() => {
+    setUserProducts(products.filter((product) => product.user === userInfo._id))
+  }, [products])
+
   const deleteHandler = (id) => {
     if (window.confirm('Are you sure')) {
       dispatch(deleteProduct(id))
@@ -108,7 +114,7 @@ const ProductListScreen = () => {
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => (
+              {userProducts.map((product) => (
                 <tr key={product._id}>
                   <td>{product._id}</td>
                   <td>{product.name}</td>
