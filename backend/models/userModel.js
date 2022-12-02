@@ -16,6 +16,21 @@ const userSchema = mongoose.Schema(
       required: [true, 'user email is required'],
       unique: [true, 'user email must be unique'],
     },
+    address: {
+      type: String,
+      required: true,
+    },
+    location: {
+      type: {
+        type: String,
+        enum: ['Point'],
+        default: 'Point',
+      },
+      coordinates: {
+        type: [Number],
+        default: [0, 0],
+      },
+    },
     password: {
       type: String,
       required: [true, 'user password is required'],
