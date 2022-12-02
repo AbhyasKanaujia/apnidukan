@@ -31,9 +31,11 @@ const authUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, phone, address, coordinate } = req.body
+  const { name, email, password, phone, address, latitude, longitude } =
+    req.body
 
-  const location = { type: 'Point', coordinate }
+  const coordinates = [latitude, longitude]
+  const location = { type: 'Point', coordinates }
 
   const userExists = await User.findOne({ email })
 
@@ -56,6 +58,9 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      phone: user.phone,
+      address: user.address,
+      location: user.location,
       isAdmin: user.isAdmin,
       token: generateToken(user._id),
     })

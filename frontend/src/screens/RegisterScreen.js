@@ -89,7 +89,18 @@ const RegisterScreen = () => {
   const submitHandler = (e) => {
     e.preventDefault()
     if (password !== confirmPassword) setMessage('Passwords do not match')
-    else dispatch(register(name, email, phone, address, password, coordinate))
+    else
+      dispatch(
+        register(
+          name,
+          email,
+          phone,
+          address,
+          password,
+          coordinate[0],
+          coordinate[1]
+        )
+      )
   }
 
   return (
@@ -178,7 +189,7 @@ const RegisterScreen = () => {
         </Col>
       </Row>
       <p>Address: {address}</p>
-      <p>Coodinatio: {`${coordinate[0]}, ${coordinate[1]}`}</p>
+      <p>Coordinates: {`(${coordinate[0]}, ${coordinate[1]})`}</p>
     </FormContainer>
   )
 }
