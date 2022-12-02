@@ -100,7 +100,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     user.address = req.body.address || user.address
     user.location = req.body.location || user.location
     if (req.body.password) {
-      User.password = req.body.password
+      user.password = req.body.password
     }
 
     const updatedUser = await user.save()

@@ -27,6 +27,9 @@ const ProfileScreen = () => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
+  const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
+  const { success } = userUpdateProfile
+
   const userLocation = useSelector((state) => state.userLocation)
   const {
     loading: loadingLocation,
@@ -65,6 +68,7 @@ const ProfileScreen = () => {
     <Row>
       <Col md={3}>
         <h2>User Profile</h2>
+        {success && <Message variant="success">Profile Updated</Message>}
         {message && <Message variant="danger">{message}</Message>}
         {error && <Message variant="danger">{error}</Message>}
         {loading && <Loader />}
