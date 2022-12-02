@@ -3,16 +3,19 @@ import FormContainer from '../components/FormContainer'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Row, Col } from 'react-bootstrap'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { register } from '../actions/userActions'
+import { Map, Marker } from 'pigeon-maps'
+
+import { getUserLocation, register } from '../actions/userActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import { USER_LOCATION_CUSTOMIZE } from '../constants/userConstants'
 
 const RegisterScreen = () => {
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
   const [address, setAddress] = useState('')
-  const [laitude, setLaitude] = useState(0)
+  const [latitude, setLatitude] = useState(0)
   const [longitude, setLongitude] = useState(0)
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -21,8 +24,14 @@ const RegisterScreen = () => {
   const dispatch = useDispatch()
 
   const userRegister = useSelector((state) => state.userRegister)
-
   const { loading, error, userInfo } = userRegister
+
+  const userLocation = useSelector((state) => state.userLocation)
+  const {
+    loading: loadingLocation,
+    error: errorLocation,
+    coordinates,
+  } = userLocation
 
   const location = useLocation()
   const navigate = useNavigate()
@@ -39,15 +48,7 @@ const RegisterScreen = () => {
     if (password !== confirmPassword) setMessage('Passwords do not match')
     else
       dispatch(
-        register(
-          name,
-          phone,
-          email,
-          address,
-          laitude,
-          longitude,
-          password
-        )
+        register(name, phone, email, address, latitude, longitude, password)
       )
   }
 
@@ -98,8 +99,38 @@ const RegisterScreen = () => {
             onChange={(e) => setAddress(e.target.value)}
           ></Form.Control>
         </Form.Group>
-
-        <h3>Map for geolocation</h3>
+        <Form.Group>
+          <Form.Label>Location</Form.Label>
+          {loadingLocation ? (
+            <Loader />
+          ) : errorLocation ? (
+            <Message variant="danger">{errorLocation}</Message>
+          ) : (
+            coordinates && (
+              <Map
+                height={300}
+                defaultCenter={coordinates}
+                onBoundsChanged={({ center }) => {
+                  setLatitude(center[0])
+                  setLongitude(center[1])
+                }}
+              >
+                <Marker />
+              </Map>
+            )
+          )}
+          <Form.Text>
+            Latitude: {latitude} Longitude: {longitude}
+          </Form.Text>
+          <br />
+          <Button
+            className="my-3"
+            variant="primary"
+            onClick={() => dispatch(getUserLocation())}
+          >
+            Detect Location
+          </Button>
+        </Form.Group>
 
         <Form.Group className="py-1" controlId="password">
           <Form.Label>Password</Form.Label>

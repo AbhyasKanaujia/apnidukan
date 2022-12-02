@@ -7,6 +7,9 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
+  USER_LOCATION_REQUEST,
+  USER_LOCATION_SUCCESS,
+  USER_LOCATION_FAIL,
 } from '../constants/userConstants'
 
 export const login = (email, password) => async (dispatch) => {
@@ -83,3 +86,26 @@ export const register =
       })
     }
   }
+
+export const getUserLocation = () => (dispatch) => {
+  dispatch({ type: USER_LOCATION_REQUEST })
+
+  if (!navigator.geolocation) {
+    dispatch({
+      type: USER_LOCATION_FAIL,
+      payload: 'Geolocation is not supported by your browser',
+    })
+  } else {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        dispatch({
+          type: USER_LOCATION_SUCCESS,
+          payload: [position.coords.latitude, position.coords.longitude],
+        })
+      },
+      (e) => {
+        dispatch({ type: USER_LOCATION_FAIL, payload: e.message })
+      }
+    )
+  }
+}
