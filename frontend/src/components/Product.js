@@ -12,8 +12,10 @@ const Product = ({ product }) => {
             <strong>{product.name}</strong>
           </Card.Title>
           <Card.Text>${product.price}</Card.Text>
-          <Card.Text as="h6">Seller: {product.seller}</Card.Text>
-          <Card.Text as="h6">Address: {product.address}</Card.Text>
+          <Card.Text>
+            Seller: {product.seller} <br />
+            Address: {product.address}
+          </Card.Text>
         </Card.Body>
       </Card>
     </Link>
