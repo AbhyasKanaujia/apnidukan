@@ -5,6 +5,9 @@ import {
   PRODUCT_LIST_NEARBY_REQUEST,
   PRODUCT_LIST_NEARBY_SUCCESS,
   PRODUCT_LIST_NEARBY_FAIL,
+  PRODUCT_DETAILS_REQUEST,
+  PRODUCT_DETAILS_SUCCESS,
+  PRODUCT_DETAILS_FAIL,
 } from '../constants/productReducer'
 import axios from 'axios'
 
@@ -36,6 +39,24 @@ export const listNearbyProducts = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_LIST_NEARBY_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const listProductDetails = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: PRODUCT_DETAILS_REQUEST })
+
+    const { data } = await axios.get(`/api/products/${id}`)
+
+    dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data })
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_DETAILS_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

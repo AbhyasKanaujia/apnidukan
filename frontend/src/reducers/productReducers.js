@@ -5,6 +5,9 @@ import {
   PRODUCT_LIST_NEARBY_REQUEST,
   PRODUCT_LIST_NEARBY_SUCCESS,
   PRODUCT_LIST_NEARBY_FAIL,
+  PRODUCT_DETAILS_REQUEST,
+  PRODUCT_DETAILS_SUCCESS,
+  PRODUCT_DETAILS_FAIL,
 } from '../constants/productReducer'
 
 export const productListReducer = (state = { products: [] }, action) => {
@@ -45,6 +48,31 @@ export const productListNearbyReducer = (state = { products: [] }, action) => {
       return {
         error: action.payload,
         loading: false,
+      }
+    default:
+      return state
+  }
+}
+
+export const productDetailsReducer = (
+  state = { product: { reviews: [] } },
+  action
+) => {
+  switch (action.type) {
+    case PRODUCT_DETAILS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      }
+    case PRODUCT_DETAILS_SUCCESS:
+      return {
+        loading: false,
+        product: action.payload,
+      }
+    case PRODUCT_DETAILS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
       }
     default:
       return state
