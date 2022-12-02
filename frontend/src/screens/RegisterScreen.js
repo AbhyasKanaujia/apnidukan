@@ -177,6 +177,8 @@ const RegisterScreen = () => {
           </Link>
         </Col>
       </Row>
+      <p>Address: {address}</p>
+      <p>Coodinatio: {`${coordinate[0]}, ${coordinate[1]}`}</p>
     </FormContainer>
   )
 }

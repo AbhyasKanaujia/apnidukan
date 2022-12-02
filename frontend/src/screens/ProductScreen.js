@@ -11,14 +11,24 @@ import {
 } from '../actions/productActions'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
 import Meta from '../components/Meta'
+import { getUserDetails } from '../actions/userActions'
+import Radar from 'radar-sdk-js'
+import { useDebounce } from 'use-debounce'
 
 const ProductScreen = () => {
   const id = useParams().id
   const navigate = useNavigate()
 
   const [qty, setQty] = useState(1)
-  const [rating, setRating] = useState(0)
+  const [rating, setRating] = useState(5)
   const [comment, setComment] = useState('')
+  const [showInfo, setShowInfo] = useState(false)
+  const [distance, setDistance] = useState(0)
+  const [driveTime, setDriveTime] = useState('0 hr')
+  const [walkTime, setWalkTime] = useState('0 hr')
+
+  const [carDistance, setCarDistance] = useState({ dist: 0, time: '0 hr' })
+  const [walkDistance, setWalkDistance] = useState({ dist: 0, time: '0 hr' })
 
   const dispatch = useDispatch()
 
@@ -27,6 +37,13 @@ const ProductScreen = () => {
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
+
+  const userDetails = useSelector((state) => state.userDetails)
+  const {
+    loading: loadingUserDetails,
+    error: errorUserDetails,
+    user: seller,
+  } = userDetails
 
   const productReviewCreate = useSelector((state) => state.productReviewCreate)
   const { success: successProductReview, error: errorProductReview } =
@@ -41,6 +58,30 @@ const ProductScreen = () => {
     }
     dispatch(listProductDetails(id))
   }, [dispatch, successProductReview, id])
+
+  const [loadedProduct] = useDebounce(product, 3000)
+
+  useEffect(() => {
+    if (product && product.user) dispatch(getUserDetails(product.user))
+
+    Radar.getDistance(
+      {
+        origin: { latitude: 40.78382, longitude: -73.97536 },
+        destination: { latitude: 40.7039, longitude: -73.9867 },
+        modes: ['foot', 'car'],
+        units: 'imperial',
+      },
+      function (err, result) {
+        if (!err) {
+          console.log(result.routes)
+
+          setDistance((result.routes.car.distance.value * 0.0003048).toFixed(2))
+          setDriveTime(result.routes.car.duration.text)
+          setWalkTime(result.routes.foot.duration.text)
+        }
+      }
+    )
+  }, [loadedProduct])
 
   const addToCartHandler = () => {
     navigate(`/cart/${id}?qty=${qty}`)
@@ -112,38 +153,87 @@ const ProductScreen = () => {
                       </Col>
                     </Row>
                   </ListGroup.Item>
-                  {product.countInStock > 0 && (
-                    <ListGroup.Item>
-                      <Row>
-                        <Col>Quantity</Col>
-                        <Col>
-                          <Form.Control
-                            as='select'
-                            value={qty}
-                            onChange={(e) => setQty(e.target.value)}
-                          >
-                            {[...Array(product.countInStock).keys()].map(
-                              (x) => (
-                                <option key={x + 1} value={x + 1}>
-                                  {x + 1}
-                                </option>
-                              )
-                            )}
-                          </Form.Control>
-                        </Col>
-                      </Row>
-                    </ListGroup.Item>
-                  )}
+                  {false &&
+                    'hide how many user can order' &&
+                    product.countInStock > 0 && (
+                      <ListGroup.Item>
+                        <Row>
+                          <Col>Quantity</Col>
+                          <Col>
+                            <Form.Control
+                              as='select'
+                              value={qty}
+                              onChange={(e) => setQty(e.target.value)}
+                            >
+                              {[...Array(product.countInStock).keys()].map(
+                                (x) => (
+                                  <option key={x + 1} value={x + 1}>
+                                    {x + 1}
+                                  </option>
+                                )
+                              )}
+                            </Form.Control>
+                          </Col>
+                        </Row>
+                      </ListGroup.Item>
+                    )}
                   <ListGroup.Item>
                     <Button
-                      onClick={addToCartHandler}
+                      onClick={() => setShowInfo((prevState) => !prevState)}
                       className='col-12'
                       type='button'
                       disabled={product.countInStock === 0}
                     >
-                      Add To Cart
+                      Get seller info
                     </Button>
                   </ListGroup.Item>
+                  {showInfo && (
+                    <>
+                      <ListGroup.Item>
+                        <Row>
+                          <Col>Seller Name</Col>
+                          <Col>{seller.name}</Col>
+                        </Row>
+                      </ListGroup.Item>
+
+                      <ListGroup.Item>
+                        <Row>
+                          <Col>Seller Address</Col>
+                          <Col>{seller.address}</Col>
+                        </Row>
+                      </ListGroup.Item>
+                      <ListGroup.Item>
+                        <Row>
+                          <Col>Distance</Col>
+                          <Col>{distance} KM</Col>
+                        </Row>
+                      </ListGroup.Item>
+                      <ListGroup.Item>
+                        <Row>
+                          <Col>Walking Time</Col>
+                          <Col>{walkTime}</Col>
+                        </Row>
+                      </ListGroup.Item>
+                      <ListGroup.Item>
+                        <Row>
+                          <Col>Drive Time</Col>
+                          <Col>{driveTime}</Col>
+                        </Row>
+                      </ListGroup.Item>
+                      <ListGroup.Item>
+                        <Row>
+                          <Col>Phone Number</Col>
+                          <Col>{seller.phone}</Col>
+                        </Row>
+                      </ListGroup.Item>
+                      <ListGroup.Item>
+                        <Row>
+                          <Col>Email</Col>
+                          <Col>{seller.email}</Col>
+                        </Row>
+                      </ListGroup.Item>
+                    </>
+                  )}
                 </ListGroup>
               </Card>
             </Col>
