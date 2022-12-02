@@ -3,11 +3,10 @@ import { Link, useParams, useNavigate } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Map, Marker } from 'pigeon-maps'
-import axios from 'axios'
 
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import { listProductDetails } from '../actions/productActions'
+import { listProductDetails, getSellerDetails } from '../actions/productActions'
 
 const ProductScreen = () => {
   const [showDetails, setShowDetails] = useState(false)
@@ -19,6 +18,9 @@ const ProductScreen = () => {
   const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
 
+  const sellerDetails = useSelector((state) => state.sellerDetails)
+  const { loading: loadingSeller, error: errorSeller, seller } = sellerDetails
+
   // on: page load
   // do:
   //      get a single product by id from backend asynchronously
@@ -26,6 +28,12 @@ const ProductScreen = () => {
   useEffect(() => {
     dispatch(listProductDetails(id))
   }, [dispatch])
+
+  useEffect(() => {
+    if (product && product.name) {
+      dispatch(getSellerDetails(id))
+    }
+  }, [product])
 
   const params = useParams()
   const navigate = useNavigate()
@@ -96,36 +104,42 @@ const ProductScreen = () => {
                     </Button>
                   </Row>
                 </ListGroup.Item>
-                {showDetails && (
-                  <>
-                    <ListGroup.Item>
-                      <Row>
-                        <Col>Seller Name</Col>
-                        <Col>{product.seller}</Col>
-                      </Row>
-                    </ListGroup.Item>
-                    <ListGroup.Item>
-                      <Row>
-                        <Col>Seller Address</Col>
-                        <Col>{product.address}</Col>
-                      </Row>
-                    </ListGroup.Item>
-                    <Map
-                      height={300}
-                      defaultCenter={product.location.coordinates}
-                      defaultZoom={11}
-                    >
-                      <Marker
-                        width={50}
-                        anchor={product.location.coordinates}
-                      />
-                      <Marker
-                        width={50}
-                        anchor={product.location.coordinates}
-                      />
-                    </Map>
-                  </>
-                )}
+                {showDetails &&
+                  seller &&
+                  (loadingSeller ? (
+                    <Loader />
+                  ) : errorSeller ? (
+                    <Message variant="danger">{errorSeller}</Message>
+                  ) : (
+                    <>
+                      <ListGroup.Item>
+                        <Row>
+                          <Col>Phone Number</Col>
+                          <Col>{seller.phone}</Col>
+                        </Row>
+                      </ListGroup.Item>
+                      <ListGroup.Item>
+                        <Row>
+                          <Col>Email Address</Col>
+                          <Col>{seller.email}</Col>
+                        </Row>
+                      </ListGroup.Item>
+                      <Map
+                        height={300}
+                        defaultCenter={seller.location.coordinates}
+                        defaultZoom={11}
+                      >
+                        <Marker
+                          width={50}
+                          anchor={seller.location.coordinates}
+                        />
+                        <Marker
+                          width={50}
+                          anchor={seller.location.coordinates}
+                        />
+                      </Map>
+                    </>
+                  ))}
               </ListGroup>
             </Card>
           </Col>

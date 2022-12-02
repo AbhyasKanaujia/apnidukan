@@ -8,6 +8,9 @@ import {
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAIL,
+  SELLER_DETAILS_REQUEST,
+  SELLER_DETAILS_SUCCESS,
+  SELLER_DETAILS_FAIL,
 } from '../constants/productConstants'
 
 export const productListReducer = (state = { products: [] }, action) => {
@@ -70,6 +73,37 @@ export const productDetailsReducer = (
         product: action.payload,
       }
     case PRODUCT_DETAILS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      }
+    default:
+      return state
+  }
+}
+
+export const sellerDetailsReducer = (
+  state = {
+    seller: {
+      phone: '',
+      email: '',
+      location: { type: 'Point', coordinates: [0, 0] },
+    },
+  },
+  action
+) => {
+  switch (action.type) {
+    case SELLER_DETAILS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      }
+    case SELLER_DETAILS_SUCCESS:
+      return {
+        loading: false,
+        seller: action.payload,
+      }
+    case SELLER_DETAILS_FAIL:
       return {
         loading: false,
         error: action.payload,

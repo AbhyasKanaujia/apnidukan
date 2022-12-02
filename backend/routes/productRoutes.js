@@ -7,6 +7,7 @@ import {
   getProducts,
   getNearbyProducts,
   getProductById,
+  getSellerDetails,
 } from '../controllers/productController.js'
 
 // @desc   Fetch all products
@@ -23,5 +24,6 @@ router.get('/nearby', getNearbyProducts)
 // @route  GET /api/products/:id
 // @access Public
 router.get('/:id', getProductById)
+router.get('/:id/seller', getSellerDetails)
 
 export default router
