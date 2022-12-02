@@ -8,7 +8,8 @@ const users = [
     phone: '9635874125',
     address: 'Imageinary Highway',
     isAdmin: true,
-    location: { type: 'Point', coordinates: [-104.9903, 39.7392] },
+    latitude: 59,
+    longitude: 44,
   },
   {
     name: 'Kavya Bhatnagar',
@@ -16,10 +17,8 @@ const users = [
     password: bcrypt.hashSync('kavya123', 10),
     phone: '9635874125',
     address: 'Imageinary Highway',
-    location: {
-      type: 'Point',
-      coordinates: [-122.5, 37.7],
-    },
+    latitude: 23,
+    longitude: 15,
   },
   {
     name: 'Anisu Neeti Kanaujia',
@@ -27,10 +26,8 @@ const users = [
     password: bcrypt.hashSync('anisu123', 10),
     phone: '9635874125',
     address: 'Imageinary Highway',
-    location: {
-      type: 'Point',
-      coordinates: [-122.5, 37.7],
-    },
+    latitude: 88,
+    longitude: 22,
   },
 ]
 

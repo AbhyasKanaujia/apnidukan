@@ -63,25 +63,63 @@ const ProductScreen = () => {
 
   useEffect(() => {
     if (product && product.user) dispatch(getUserDetails(product.user))
+  }, [product])
 
-    Radar.getDistance(
-      {
-        origin: { latitude: 40.78382, longitude: -73.97536 },
-        destination: { latitude: 40.7039, longitude: -73.9867 },
-        modes: ['foot', 'car'],
-        units: 'imperial',
-      },
-      function (err, result) {
-        if (!err) {
-          console.log(result.routes)
+  useEffect(() => {
+    if (seller && seller.location) {
+      Radar.getDistance(
+        {
+          origin: {
+            latitude: userInfo.location.coordinates[0],
+            longitude: userInfo.location.coordinates[1],
+          },
+          destination: {
+            latitude: seller.location.coordinates[0],
+            longitude: seller.location.coordinates[1],
+          },
+          modes: ['foot', 'car'],
+          units: 'imperial',
+        },
+        function (err, result) {
+          if (!err) {
+            console.log(result.routes)
 
-          setDistance((result.routes.car.distance.value * 0.0003048).toFixed(2))
-          setDriveTime(result.routes.car.duration.text)
-          setWalkTime(result.routes.foot.duration.text)
+            setDistance(
+              (result.routes.car.distance.value * 0.0003048).toFixed(2)
+            )
+            setDriveTime(result.routes.car.duration.text)
+            setWalkTime(result.routes.foot.duration.text)
+          } else {
+            Radar.getDistance(
+              {
+                origin: {
+                  latitude: userInfo.location.coordinates[0],
+                  longitude: userInfo.location.coordinates[1],
+                },
+                destination: {
+                  latitude: seller.location.coordinates[0],
+                  longitude: seller.location.coordinates[1],
+                },
+                modes: ['car'],
+                units: 'imperial',
+              },
+              function (err, result) {
+                if (!err) {
+                  console.log(result.routes)
+
+                  setDistance(
+                    (result.routes.car.distance.value * 0.0003048).toFixed(2)
+                  )
+                  setDriveTime(result.routes.car.duration.text)
+                  setWalkTime(result.routes.foot.duration.text)
+                }
+              }
+            )
+          }
         }
-      }
-    )
-  }, [loadedProduct])
+      )
+    }
+  }, [seller])
 
   const addToCartHandler = () => {
     navigate(`/cart/${id}?qty=${qty}`)
@@ -202,24 +240,30 @@ const ProductScreen = () => {
                           <Col>{seller.address}</Col>
                         </Row>
                       </ListGroup.Item>
-                      <ListGroup.Item>
-                        <Row>
-                          <Col>Distance</Col>
-                          <Col>{distance} KM</Col>
-                        </Row>
-                      </ListGroup.Item>
-                      <ListGroup.Item>
-                        <Row>
-                          <Col>Walking Time</Col>
-                          <Col>{walkTime}</Col>
-                        </Row>
-                      </ListGroup.Item>
-                      <ListGroup.Item>
-                        <Row>
-                          <Col>Drive Time</Col>
-                          <Col>{driveTime}</Col>
-                        </Row>
-                      </ListGroup.Item>
+                      {distance !== 0 && (
+                        <ListGroup.Item>
+                          <Row>
+                            <Col>Distance</Col>
+                            <Col>{distance} KM</Col>
+                          </Row>
+                        </ListGroup.Item>
+                      )}
+                      {walkTime !== '0 hr' && (
+                        <ListGroup.Item>
+                          <Row>
+                            <Col>Walking Time</Col>
+                            <Col>{walkTime}</Col>
+                          </Row>
+                        </ListGroup.Item>
+                      )}
+                      {driveTime !== '0 hr' && (
+                        <ListGroup.Item>
+                          <Row>
+                            <Col>Drive Time</Col>
+                            <Col>{driveTime}</Col>
+                          </Row>
+                        </ListGroup.Item>
+                      )}
                       <ListGroup.Item>
                         <Row>
                           <Col>Phone Number</Col>
