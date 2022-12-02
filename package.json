@@ -1,1 +1,22 @@
-{}
+{
+  "name": "centrex-student-services",
+  "version": "1.0.0",
+  "description": "Minor Project MCA",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AbhyasKanaujia/apnidukan.git"
+  },
+  "author": "Abhyas Kumar Kanaujia",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AbhyasKanaujia/apnidukan/issues"
+  },
+  "homepage": "https://github.com/AbhyasKanaujia/apnidukan#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

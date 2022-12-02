@@ -1,11 +1,30 @@
+import { useEffect, useState } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap'
-import products from '../products'
+import axios from 'axios'
 
 const ProductScreen = () => {
+  // get id from URL
+  const id = useParams().id
+
+  // store a single product for the details page
+  const [product, setProduct] = useState({})
+
+  // on: page load
+  // do:
+  //      get a single product by id from backend asynchronously
+  //      update product state
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const { data } = await axios.get(`/api/products/${id}`)
+      setProduct(data)
+    }
+    fetchProduct()
+  }, [])
+
   const params = useParams()
   const navigate = useNavigate()
-  const product = products.find((product) => product._id == params.id)
+
   return (
     <>
       <Link className="btn btn-light my-3" to="/">

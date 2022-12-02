@@ -16,7 +16,7 @@ const products = [
       coordinates: [22, 88],
     },
     address: 'Shanti Bazar, Sonada, Darjeeling',
-    seller: "Divya Bhatnagar"
+    seller: 'Divya Bhatnagar',
   },
   {
     _id: '2',
@@ -35,7 +35,7 @@ const products = [
       coordinates: [22, 88],
     },
     address: 'Shanti Bazar, Sonada, Darjeeling',
-    seller: "Divya Bhatnagar"
+    seller: 'Divya Bhatnagar',
   },
   {
     _id: '3',
@@ -54,7 +54,7 @@ const products = [
       coordinates: [22, 88],
     },
     address: 'Shanti Bazar, Sonada, Darjeeling',
-    seller: "Divya Bhatnagar"
+    seller: 'Divya Bhatnagar',
   },
   {
     _id: '4',
@@ -73,7 +73,7 @@ const products = [
       coordinates: [22, 88],
     },
     address: 'Shanti Bazar, Sonada, Darjeeling',
-    seller: "Divya Bhatnagar"
+    seller: 'Divya Bhatnagar',
   },
   {
     _id: '5',
@@ -92,7 +92,7 @@ const products = [
       coordinates: [22, 88],
     },
     address: 'Shanti Bazar, Sonada, Darjeeling',
-    seller: "Divya Bhatnagar"
+    seller: 'Divya Bhatnagar',
   },
   {
     _id: '6',
@@ -111,8 +111,8 @@ const products = [
       coordinates: [22, 88],
     },
     address: 'Shanti Bazar, Sonada, Darjeeling',
-    seller: "Divya Bhatnagar"
+    seller: 'Divya Bhatnagar',
   },
 ]
 
-export default products
+module.exports = products
