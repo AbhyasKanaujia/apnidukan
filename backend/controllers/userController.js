@@ -2,13 +2,14 @@ import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
 import generateToken from '../utils/generateToken.js'
 
-// @desc   Auth user & get a token
-// @route  POST /api/users/login
-// @access Public
+// @desc    Auth user & get token
+// @route   POST /api/users/login
+// @access  Public
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body
 
   const user = await User.findOne({ email })
+
   if (user && (await user.matchPassword(password))) {
     res.json({
       _id: user._id,
@@ -26,9 +27,9 @@ const authUser = asyncHandler(async (req, res) => {
   }
 })
 
-// @desc   Register a new year
-// @route  POST /api/users/
-// @access Public
+// @desc    Register a new user
+// @route   POST /api/users
+// @access  Public
 const registerUser = asyncHandler(async (req, res) => {
   const { name, phone, email, address, location, password } = req.body
 
@@ -70,7 +71,7 @@ const registerUser = asyncHandler(async (req, res) => {
 // @route  GET /api/users/profile
 // @access Private
 const getUserProfile = asyncHandler(async (req, res) => {
-  const user = User.findById(req.user._id).select('-password')
+  const user = await User.findById(req.user._id)
   if (user) {
     res.json({
       _id: user._id,
@@ -87,21 +88,23 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }
 })
 
-// @desc   Update user profile
-// @route  PUT /api/users/profile
-// @access Private
+// @desc    Update user profile
+// @route   PUT /api/users/profile
+// @access  Private
 const updateUserProfile = asyncHandler(async (req, res) => {
-  const user = User.findById(req.user._id).select('-password')
+  const user = await User.findById(req.user._id)
   if (user) {
     user.name = req.body.name || user.name
     user.phone = req.body.phone || user.phone
     user.email = req.body.email || user.email
     user.address = req.body.address || user.address
     user.location = req.body.location || user.location
-    if (req.body.password) User.password = req.body.password
+    if (req.body.password) {
+      User.password = req.body.password
+    }
 
     const updatedUser = await user.save()
-    
+
     res.json({
       _id: updatedUser._id,
       name: updatedUser.name,

@@ -99,6 +99,7 @@ const RegisterScreen = () => {
             onChange={(e) => setAddress(e.target.value)}
           ></Form.Control>
         </Form.Group>
+        
         <Form.Group>
           <Form.Label>Location</Form.Label>
           {loadingLocation ? (

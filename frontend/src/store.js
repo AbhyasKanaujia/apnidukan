@@ -12,7 +12,7 @@ import {
   userLocationReducer,
   userLoginReducer,
   userRegisterReducer,
-  userLocatoinReducer,
+  userDetailsReducer,
 } from './reducers/userReducers'
 
 const reducer = combineReducers({
@@ -23,6 +23,7 @@ const reducer = combineReducers({
   sellerDetails: sellerDetailsReducer,
   userRegister: userRegisterReducer,
   userLocation: userLocationReducer,
+  userDetails: userDetailsReducer,
 })
 
 const userInfoFromStorage = localStorage.getItem('userInfo')
