@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import { Map, Marker } from 'pigeon-maps'
 import axios from 'axios'
 
 import Loader from '../components/Loader'
@@ -109,6 +110,20 @@ const ProductScreen = () => {
                         <Col>{product.address}</Col>
                       </Row>
                     </ListGroup.Item>
+                    <Map
+                      height={300}
+                      defaultCenter={product.location.coordinates}
+                      defaultZoom={11}
+                    >
+                      <Marker
+                        width={50}
+                        anchor={product.location.coordinates}
+                      />
+                      <Marker
+                        width={50}
+                        anchor={product.location.coordinates}
+                      />
+                    </Map>
                   </>
                 )}
               </ListGroup>
