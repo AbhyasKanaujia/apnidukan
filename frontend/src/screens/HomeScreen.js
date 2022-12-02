@@ -1,8 +1,11 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Col, Row } from 'react-bootstrap'
+
 import { listNearbyProducts } from '../actions/productActions'
 
+import Message from '../components/Message'
+import Loader from '../components/Loader'
 import Product from '../components/Product'
 
 const HomeScreen = () => {
@@ -23,9 +26,9 @@ const HomeScreen = () => {
     <>
       <h1>Recommended Products near you</h1>
       {loading ? (
-        <h2>Loading...</h2>
+        <Loader />
       ) : error ? (
-        <h3>{error}</h3>
+        <Message variant='error'>{error}</Message>
       ) : (
         <Row>
           {products.map((product) => (
