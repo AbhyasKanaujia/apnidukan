@@ -2,9 +2,9 @@ import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
   PRODUCT_LIST_FAIL,
-  PRODUCT_LIST_NEAR_REQUEST,
-  PRODUCT_LIST_NEAR_SUCCESS,
-  PRODUCT_LIST_NEAR_FAIL,
+  PRODUCT_LIST_NEARBY_REQUEST,
+  PRODUCT_LIST_NEARBY_SUCCESS,
+  PRODUCT_LIST_NEARBY_FAIL,
 } from '../constants/productReducer'
 
 export const productListReducer = (state = { products: [] }, action) => {
@@ -29,19 +29,19 @@ export const productListReducer = (state = { products: [] }, action) => {
   }
 }
 
-export const productListNearReducer = (state = { products: [] }, action) => {
+export const productListNearbyReducer = (state = { products: [] }, action) => {
   switch (action.type) {
-    case PRODUCT_LIST_NEAR_REQUEST:
+    case PRODUCT_LIST_NEARBY_REQUEST:
       return {
         products: [],
         loading: true,
       }
-    case PRODUCT_LIST_NEAR_SUCCESS:
+    case PRODUCT_LIST_NEARBY_SUCCESS:
       return {
         products: action.payload,
         loading: false,
       }
-    case PRODUCT_LIST_NEAR_FAIL:
+    case PRODUCT_LIST_NEARBY_FAIL:
       return {
         error: action.payload,
         loading: false,
