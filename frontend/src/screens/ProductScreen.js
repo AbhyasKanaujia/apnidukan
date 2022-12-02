@@ -9,6 +9,8 @@ import Message from '../components/Message'
 import { listProductDetails } from '../actions/productActions'
 
 const ProductScreen = () => {
+  const [showDetails, setShowDetails] = useState(false)
+
   // get id from URL
   const id = useParams().id
   const dispatch = useDispatch()
@@ -26,6 +28,10 @@ const ProductScreen = () => {
 
   const params = useParams()
   const navigate = useNavigate()
+
+  const showDetailsHandler = () => {
+    setShowDetails((prevState) => !prevState)
+  }
 
   return (
     <>
@@ -80,11 +86,31 @@ const ProductScreen = () => {
 
                 <ListGroup.Item>
                   <Row>
-                    <Button className="col-12" type="button">
+                    <Button
+                      className="col-12"
+                      type="button"
+                      onClick={showDetailsHandler}
+                    >
                       Get Seller Details
                     </Button>
                   </Row>
                 </ListGroup.Item>
+                {showDetails && (
+                  <>
+                    <ListGroup.Item>
+                      <Row>
+                        <Col>Seller Name</Col>
+                        <Col>{product.seller}</Col>
+                      </Row>
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                      <Row>
+                        <Col>Seller Address</Col>
+                        <Col>{product.address}</Col>
+                      </Row>
+                    </ListGroup.Item>
+                  </>
+                )}
               </ListGroup>
             </Card>
           </Col>
