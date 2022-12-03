@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useParams, useNavigate } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Map, Marker } from 'pigeon-maps'
@@ -27,16 +27,13 @@ const ProductScreen = () => {
   //      update product state
   useEffect(() => {
     dispatch(listProductDetails(id))
-  }, [dispatch])
+  }, [dispatch, id])
 
   useEffect(() => {
     if (product && product.name) {
       dispatch(getSellerDetails(id))
     }
-  }, [product])
-
-  const params = useParams()
-  const navigate = useNavigate()
+  }, [product, dispatch, id])
 
   const showDetailsHandler = () => {
     setShowDetails((prevState) => !prevState)

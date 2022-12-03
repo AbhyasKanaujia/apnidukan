@@ -16,6 +16,7 @@ import {
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
+  
 } from '../constants/userConstants'
 
 export const login = (email, password) => async (dispatch) => {
@@ -76,7 +77,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
       type: USER_UPDATE_PROFILE_SUCCESS,
       payload: data,
     })
-    
+
     dispatch({
       type: USER_LOGIN_SUCCESS,
       payload: data,

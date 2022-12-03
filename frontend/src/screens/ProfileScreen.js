@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Form, Row, Col } from 'react-bootstrap'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Button, Form, Row, Col, Table } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 import { getUserLocation, getUserDetails } from '../actions/userActions'
+import { getMyProducts } from '../actions/productActions'
 import { Map, Marker } from 'pigeon-maps'
+import { LinkContainer } from 'react-router-bootstrap'
 
 import Loader from '../components/Loader'
 import Message from '../components/Message'
@@ -21,6 +23,7 @@ const ProfileScreen = () => {
   const [message, setMessage] = useState(null)
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const userDetails = useSelector((state) => state.userDetails)
   const { loading, error, user } = userDetails
@@ -38,15 +41,20 @@ const ProfileScreen = () => {
     coordinates,
   } = userLocation
 
-  const location = useLocation()
-  const navigate = useNavigate()
+  const productListMy = useSelector((state) => state.productListMy)
+  const {
+    loading: producctListLoading,
+    error: productListError,
+    products,
+  } = productListMy
 
   useEffect(() => {
     if (!userInfo) {
       navigate('/login')
     } else {
       if (!user || !user.name || success) {
-        dispatch({ type: USER_UPDATE_PROFILE_RESET })(getUserDetails('profile'))
+        dispatch({ type: USER_UPDATE_PROFILE_RESET })
+        dispatch(getUserDetails('profile'))
       } else {
         setName(user.name)
         setPhone(user.phone)
@@ -55,6 +63,7 @@ const ProfileScreen = () => {
         setLatitude(user.location.coordinates[0])
         setLongitude(user.location.coordinates[1])
       }
+      dispatch(getMyProducts())
     }
   }, [dispatch, userInfo, navigate, user, success])
 
@@ -72,8 +81,10 @@ const ProfileScreen = () => {
         <h2>User Profile</h2>
         {success && <Message variant="success">Profile Updated</Message>}
         {message && <Message variant="danger">{message}</Message>}
-        {error && <Message variant="danger">{error}</Message>}
-        {loading && <Loader />}
+        {productListError && (
+          <Message variant="danger">{productListError}</Message>
+        )}
+        {producctListLoading && <Loader />}
         <Form onSubmit={submitHandler}>
           <Form.Group className="py-1" controlId="name">
             <Form.Label>Name</Form.Label>
@@ -174,7 +185,61 @@ const ProfileScreen = () => {
         </Form>
       </Col>
       <Col md={9}>
-        <h2>My Products</h2>
+        <Row className="align-item-center">
+          <Col>
+            <h1>Proucts</h1>
+          </Col>
+          <Col className="text-right">
+            Craete product button
+            {/* <Button className="my-3" onClick={createProductHandler}>
+              <i className="fas fa-plus"></i> Create Product
+            </Button> */}
+          </Col>
+        </Row>
+        {loading ? (
+          <Loader />
+        ) : error ? (
+          <Message variant="danger">{error}</Message>
+        ) : (
+          <Table striped hover responsive className="table-sm">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>PRICE</th>
+                <th>CATEGORY</th>
+                <th>BRAND</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {products.map((product) => (
+                <tr key={product._id}>
+                  <td>{product._id}</td>
+                  <td>{product.name}</td>
+                  <td>$ {product.price}</td>
+                  <td>{product.category}</td>
+                  <td>{product.brand}</td>
+                  <td>
+                    <LinkContainer to={`/admin/product/${product._id}/edit`}>
+                      <Button variant="light" className="btn-sm">
+                        <i className="fas fa-edit"></i>
+                      </Button>
+                    </LinkContainer>
+                    Delete Button
+                    {/* <Button
+                      variant="danger"
+                      className="btn-sm"
+                      onClick={() => deleteHandler(product._id)}
+                    > 
+                      <i className="fas fa-trash"></i>
+                    </Button>*/}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
       </Col>
     </Row>
   )

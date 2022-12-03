@@ -7,6 +7,7 @@ import {
   productListNearbyReducer,
   productDetailsReducer,
   sellerDetailsReducer,
+  productListMyReducer,
 } from './reducers/productReducers'
 import {
   userLocationReducer,
@@ -18,6 +19,7 @@ import {
 
 const reducer = combineReducers({
   productList: productListReducer,
+  productListMy: productListMyReducer,
   productListNearby: productListNearbyReducer,
   productDetails: productDetailsReducer,
   userLogin: userLoginReducer,

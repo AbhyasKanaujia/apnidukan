@@ -11,6 +11,9 @@ import {
   SELLER_DETAILS_REQUEST,
   SELLER_DETAILS_SUCCESS,
   SELLER_DETAILS_FAIL,
+  PRODUCT_LIST_MY_REQUEST,
+  PRODUCT_LIST_MY_FAIL,
+  PRODUCT_LIST_MY_SUCCESS,
 } from '../constants/productConstants'
 import axios from 'axios'
 
@@ -78,6 +81,36 @@ export const getSellerDetails = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: SELLER_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const getMyProducts = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: PRODUCT_LIST_MY_REQUEST })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const { data } = await axios.get(`/api/products/my`, config)
+
+    dispatch({ type: PRODUCT_LIST_MY_SUCCESS, payload: data })
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_LIST_MY_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

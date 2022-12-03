@@ -10,6 +10,14 @@ const getProducts = asyncHandler(async (req, res) => {
   res.json(products)
 })
 
+// @desc   Fetch my products
+// @route  GET /api/products
+// @access Private
+const getMyProducts = asyncHandler(async (req, res) => {
+  const products = await Product.find({ user: req.user._id })
+  res.json(products)
+})
+
 // @desc   Fetch all nearby products
 // @route  GET /api/products
 // @access Public
@@ -50,4 +58,10 @@ const getSellerDetails = asyncHandler(async (req, res) => {
   }
 })
 
-export { getProducts, getNearbyProducts, getProductById, getSellerDetails }
+export {
+  getProducts,
+  getMyProducts,
+  getNearbyProducts,
+  getProductById,
+  getSellerDetails,
+}

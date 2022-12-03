@@ -8,12 +8,20 @@ import {
   getNearbyProducts,
   getProductById,
   getSellerDetails,
+  getMyProducts,
 } from '../controllers/productController.js'
+
+import { protect } from '../middleware/authMiddleware.js'
 
 // @desc   Fetch all products
 // @route  GET /api/products
 // @access Public
 router.get('/', getProducts)
+
+// @desc   Fetch all products
+// @route  GET /api/products
+// @access Private
+router.get('/my', protect, getMyProducts)
 
 // @desc   Fetch all nearby products
 // @route  GET /api/products

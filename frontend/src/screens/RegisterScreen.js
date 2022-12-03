@@ -8,7 +8,6 @@ import { Map, Marker } from 'pigeon-maps'
 import { getUserLocation, register } from '../actions/userActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import { USER_LOCATION_CUSTOMIZE } from '../constants/userConstants'
 
 const RegisterScreen = () => {
   const [name, setName] = useState('')
