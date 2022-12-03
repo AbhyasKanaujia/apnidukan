@@ -36,7 +36,7 @@ const HomeScreen = ({ services }) => {
     } else {
       navigate('/login')
     }
-  }, [dispatch, keyword, userInfo, category])
+  }, [dispatch, keyword, userInfo, category, navigate])
 
   return (
     <>

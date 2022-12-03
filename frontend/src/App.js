@@ -42,7 +42,7 @@ const App = () => {
             />
             <Route
               path="/admin/product/:id/edit"
-              element={<ProductEditScreen />}
+              element={<ProductEditScreen services={services} />}
             />
           </Routes>
         </Container>

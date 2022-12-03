@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import FormContainer from '../components/FormContainer'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form } from 'react-bootstrap'
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
-import { getUserDetails, updateUser } from '../actions/userActions'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { Map, Marker } from 'pigeon-maps'
@@ -12,7 +11,7 @@ import axios from 'axios'
 import { listProductDetails, updateProduct } from '../actions/productActions'
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
 
-const ProductEditScreen = () => {
+const ProductEditScreen = ({ services }) => {
   const [name, setName] = useState('')
   const [address, setAddress] = useState('')
   const [location, setLocation] = useState({
@@ -59,7 +58,7 @@ const ProductEditScreen = () => {
         setPrice(product.price)
       }
     }
-  }, [dispatch, productId, product, successUpdate])
+  }, [dispatch, productId, product, successUpdate, navigate])
 
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0]
@@ -174,6 +173,7 @@ const ProductEditScreen = () => {
             <Form.Group className="py-1" controlId="image">
               <Form.Label>Image</Form.Label>
               <img
+                alt={image}
                 src={image}
                 className="img-responsive my-2"
                 style={{
@@ -202,17 +202,20 @@ const ProductEditScreen = () => {
             <Form.Group className="py-1" controlId="category">
               <Form.Label>Category</Form.Label>
               <Form.Control
-                type="text"
+                as="select"
                 placeholder="Enter category"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-              ></Form.Control>
+              >
+                {services.map((service) => (
+                  <option value={service}>{service}</option>
+                ))}
+              </Form.Control>
             </Form.Group>
 
             <Form.Group className="py-1" controlId="description">
               <Form.Label>Description</Form.Label>
               <Form.Control
-                type="text"
                 placeholder="Enter description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}

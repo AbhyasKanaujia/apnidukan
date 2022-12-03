@@ -136,7 +136,7 @@ const createProduct = asyncHandler(async (req, res) => {
     location: req.user.location,
     name: 'Sample name',
     image: '/images/sample.jpeg',
-    category: 'Book',
+    category: 'Books',
     description: 'Sample description',
     price: 0,
   })

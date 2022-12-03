@@ -35,7 +35,7 @@ const ProductScreen = () => {
     } else {
       navigate('/login')
     }
-  }, [dispatch, id])
+  }, [dispatch, id, navigate, userInfo])
 
   useEffect(() => {
     if (product && product.name) {

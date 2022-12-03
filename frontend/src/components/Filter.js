@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Tab, Tabs } from 'react-bootstrap'
 
 const Filter = ({ services, category, setCategory }) => {
