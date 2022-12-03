@@ -18,7 +18,7 @@ import { protect } from '../middleware/authMiddleware.js'
 
 router.route('/').get(getProducts).post(protect, createProduct)
 router.get('/my', protect, getMyProducts)
-router.get('/nearby', getNearbyProducts)
+router.get('/nearby', protect, getNearbyProducts)
 router
   .route('/:id')
   .get(getProductById)

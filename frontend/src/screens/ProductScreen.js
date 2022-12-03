@@ -21,6 +21,8 @@ const ProductScreen = () => {
   const sellerDetails = useSelector((state) => state.sellerDetails)
   const { loading: loadingSeller, error: errorSeller, seller } = sellerDetails
 
+  const userLogin = useSelector((state) => state.userLogin)
+
   // on: page load
   // do:
   //      get a single product by id from backend asynchronously

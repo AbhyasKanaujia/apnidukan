@@ -48,12 +48,23 @@ export const listProducts =
 
 export const listNearbyProducts =
   (keyword = '') =>
-  async (dispatch) => {
+  async (dispatch, getState) => {
     try {
       dispatch({ type: PRODUCT_LIST_NEARBY_REQUEST })
 
+      const {
+        userLogin: { userInfo },
+      } = getState()
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      }
+
       const { data } = await axios.get(
-        `/api/products/nearby?keyword=${keyword}`
+        `/api/products/nearby?keyword=${keyword}`,
+        config
       )
 
       dispatch({ type: PRODUCT_LIST_NEARBY_SUCCESS, payload: data })
