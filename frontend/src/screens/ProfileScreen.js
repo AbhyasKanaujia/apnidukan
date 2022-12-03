@@ -19,6 +19,7 @@ import {
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
+import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
 
 const ProfileScreen = () => {
   const [name, setName] = useState('')
@@ -81,8 +82,11 @@ const ProfileScreen = () => {
   useEffect(() => {
     dispatch({ type: USER_UPDATE_PROFILE_RESET })
     dispatch(getUserDetails('profile'))
+  }, [successDelete, dispatch])
+
+  useEffect(() => {
     dispatch(getMyProducts())
-  }, [])
+  }, [successDelete, dispatch])
 
   useEffect(() => {
     if (user && user.name) {
@@ -98,8 +102,9 @@ const ProfileScreen = () => {
   useEffect(() => {
     if (successCreate) {
       navigate(`/admin/product/${createdProduct._id}/edit`)
+      dispatch({ type: PRODUCT_CREATE_RESET })
     }
-  }, [successCreate, createdProduct, navigate])
+  }, [successCreate, createdProduct, navigate, dispatch])
 
   const submitHandler = (e) => {
     e.preventDefault()
