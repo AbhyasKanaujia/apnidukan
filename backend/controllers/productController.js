@@ -43,19 +43,6 @@ const getNearbyProducts = asyncHandler(async (req, res) => {
     : {}
 
   const category = req.query.category ? { category: req.query.category } : {}
-  console.log({
-    ...keyword,
-    ...category,
-    location: {
-      $near: {
-        $geometry: {
-          type: 'Point',
-          coordinates: req.user.location.coordinates,
-        },
-        $maxDistance: 1000,
-      },
-    },
-  })
 
   const products = await Product.find({
     ...keyword,

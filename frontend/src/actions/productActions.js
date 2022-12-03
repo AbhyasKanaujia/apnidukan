@@ -47,7 +47,7 @@ export const listProducts =
   }
 
 export const listNearbyProducts =
-  (keyword = '', category = '') =>
+  (keyword = '', category = '', maxDistance = 0) =>
   async (dispatch, getState) => {
     try {
       dispatch({ type: PRODUCT_LIST_NEARBY_REQUEST })
@@ -63,7 +63,7 @@ export const listNearbyProducts =
       }
 
       const { data } = await axios.get(
-        `/api/products/nearby?keyword=${keyword}&category=${category}`,
+        `/api/products/nearby?keyword=${keyword}&category=${category}&maxDistance=${maxDistance}`,
         config
       )
 

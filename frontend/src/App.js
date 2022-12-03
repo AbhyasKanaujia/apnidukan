@@ -20,6 +20,8 @@ const App = () => {
     'Laundry',
     'Other',
   ]
+  const ranges = [0.5, 1, 2, 3, 5, 10, 20, 30, 40, 50, 100]
+
   return (
     <Router>
       <Header />
@@ -28,7 +30,7 @@ const App = () => {
           <Routes>
             <Route
               path="/"
-              element={<HomeScreen services={services} />}
+              element={<HomeScreen services={services} ranges={ranges} />}
               exact
             />
             <Route path="/login" element={<LoginScreen />} />
@@ -38,7 +40,7 @@ const App = () => {
             <Route path="/product/:id" element={<ProductScreen />} />
             <Route
               path="/search/:keyword"
-              element={<HomeScreen services={services} />}
+              element={<HomeScreen services={services} ranges={ranges} />}
             />
             <Route
               path="/admin/product/:id/edit"

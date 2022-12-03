@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Col, Row } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
+import { useDebounce } from 'use-debounce'
 
 import { listNearbyProducts } from '../actions/productActions'
 
@@ -11,7 +12,7 @@ import Loader from '../components/Loader'
 import Product from '../components/Product'
 import Filter from '../components/Filter'
 
-const HomeScreen = ({ services }) => {
+const HomeScreen = ({ services, ranges }) => {
   const dispatch = useDispatch()
   const params = useParams()
   const navigate = useNavigate()
@@ -19,6 +20,8 @@ const HomeScreen = ({ services }) => {
   const keyword = params.keyword
 
   const [category, setCategory] = useState(services[0])
+  const [maxDistance, setMaxDistance] = useState(ranges[3])
+  const [debouncedMaxDistance] = useDebounce(maxDistance, 1000)
 
   const productListNearby = useSelector((state) => state.productListNearby)
   const { loading, products, error } = productListNearby
@@ -32,11 +35,11 @@ const HomeScreen = ({ services }) => {
   //    update products state in redux
   useEffect(() => {
     if (userInfo) {
-      dispatch(listNearbyProducts(keyword, category))
+      dispatch(listNearbyProducts(keyword, category, debouncedMaxDistance))
     } else {
       navigate('/login')
     }
-  }, [dispatch, keyword, userInfo, category, navigate])
+  }, [dispatch, keyword, userInfo, category, navigate, debouncedMaxDistance])
 
   return (
     <>
@@ -44,8 +47,11 @@ const HomeScreen = ({ services }) => {
       <div className="d-flex justify-content-between flex-wrap align-center">
         <Filter
           services={services}
+          ranges={ranges}
           category={category}
           setCategory={setCategory}
+          maxDistance={maxDistance}
+          setMaxDistance={setMaxDistance}
         />
       </div>
 
