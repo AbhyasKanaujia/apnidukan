@@ -154,7 +154,7 @@ const ProductEditScreen = ({ services }) => {
                     <Marker />
                   </Map>
                   <Form.Text>
-                    Longitude: {location.coordinates[0]} Latitude:
+                    Latitude: {location.coordinates[0]} Longitude:
                     {location.coordinates[1]}
                   </Form.Text>
                 </Form.Group>
