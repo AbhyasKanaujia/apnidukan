@@ -7,6 +7,7 @@ import { getUserDetails, updateUser } from '../actions/userActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { Map, Marker } from 'pigeon-maps'
+import axios from 'axios'
 
 import { listProductDetails, updateProduct } from '../actions/productActions'
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
@@ -22,6 +23,7 @@ const ProductEditScreen = () => {
   const [category, setCategory] = useState('')
   const [description, setDescription] = useState('')
   const [price, setPrice] = useState(0)
+  const [uploading, setUploading] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -58,6 +60,28 @@ const ProductEditScreen = () => {
       }
     }
   }, [dispatch, productId, product, successUpdate])
+
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0]
+    const formData = new FormData()
+    formData.append('image', file)
+    setUploading(true)
+
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+      const { data } = await axios.post('/api/upload', formData, config)
+
+      setImage(data)
+      setUploading(false)
+    } catch (error) {
+      console.error(error)
+      setUploading(false)
+    }
+  }
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -151,9 +175,13 @@ const ProductEditScreen = () => {
               <Form.Label>Image</Form.Label>
               <img
                 src={image}
-                className="img-responsive"
-                width="100%"
-                height="auto"
+                className="img-responsive my-2"
+                style={{
+                  maxWidth: '100%',
+                  maxHeight: '300px',
+                  display: 'block',
+                  margin: 'auto',
+                }}
               />
               <Form.Control
                 type="text"
@@ -161,6 +189,14 @@ const ProductEditScreen = () => {
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
               ></Form.Control>
+
+              <Form.Control
+                type="file"
+                id="image-file"
+                label="Choose File"
+                onChange={uploadFileHandler}
+              />
+              {uploading && <Loader />}
             </Form.Group>
 
             <Form.Group className="py-1" controlId="category">
