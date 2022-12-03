@@ -5,7 +5,11 @@ import { useNavigate } from 'react-router-dom'
 import { Map, Marker } from 'pigeon-maps'
 import { LinkContainer } from 'react-router-bootstrap'
 
-import { getUserLocation, getUserDetails } from '../actions/userActions'
+import {
+  getUserLocation,
+  getUserDetails,
+  updateUserProfile,
+} from '../actions/userActions'
 import {
   getMyProducts,
   deleteProduct,
@@ -71,33 +75,50 @@ const ProfileScreen = () => {
   useEffect(() => {
     if (!userInfo) {
       navigate('/login')
-    } else {
-      if (!user || !user.name || success) {
-        dispatch({ type: USER_UPDATE_PROFILE_RESET })
-        dispatch(getUserDetails('profile'))
-      } else {
-        setName(user.name)
-        setPhone(user.phone)
-        setEmail(user.email)
-        setAddress(user.address)
-        setLatitude(user.location.coordinates[0])
-        setLongitude(user.location.coordinates[1])
-      }
-      dispatch(getMyProducts())
     }
-  }, [dispatch, userInfo, navigate, user, success, successDelete])
+  }, [dispatch, userInfo, navigate, user, success])
+
+  useEffect(() => {
+    dispatch({ type: USER_UPDATE_PROFILE_RESET })
+    dispatch(getUserDetails('profile'))
+    dispatch(getMyProducts())
+  }, [])
+
+  useEffect(() => {
+    if (user && user.name) {
+      setName(user.name)
+      setPhone(user.phone)
+      setEmail(user.email)
+      setAddress(user.address)
+      setLatitude(user.location.coordinates[0])
+      setLongitude(user.location.coordinates[1])
+    }
+  }, [user])
 
   useEffect(() => {
     if (successCreate) {
       navigate(`/admin/product/${createdProduct._id}/edit`)
     }
-  }, [successCreate])
+  }, [successCreate, createdProduct, navigate])
 
   const submitHandler = (e) => {
     e.preventDefault()
     if (password !== confirmPassword) setMessage('Passwords do not match')
     else {
-      // DISPATCH UPDATE PROFILE
+      dispatch(
+        updateUserProfile({
+          id: user._id,
+          name,
+          phone,
+          email,
+          address,
+          location: {
+            type: 'Point',
+            coordinates: [latitude, longitude],
+          },
+          password,
+        })
+      )
     }
   }
 
