@@ -78,6 +78,57 @@ const deleteProduct = asyncHandler(async (req, res) => {
   }
 })
 
+// @desc    Create a product
+// @route   POST /api/products
+// @access  Private/Admin
+const createProduct = asyncHandler(async (req, res) => {
+  const product = new Product({
+    user: req.user._id,
+    seller: req.user.name,
+    address: req.user.address,
+    location: req.user.location,
+    name: 'Sample name',
+    image: '/images/sample.jpeg',
+    category: 'Book',
+    description: 'Sample description',
+    price: 0,
+  })
+
+  const createdProduct = await product.save()
+  res.status(201).json(createdProduct)
+})
+
+// @desc    Update a product
+// @route   PUT /api/products/:id
+// @access  Private/Admin
+const updateProduct = asyncHandler(async (req, res) => {
+  const { name, address, location, image, category, description, price } =
+    req.body
+
+  const product = await Product.findById(req.params.id)
+
+  if (product) {
+    if (product.user.equals(req.user._is) || req.user.isAdmin) {
+      product.address = address
+      product.location = location
+      product.name = name
+      product.image = image
+      product.category = category
+      product.description = description
+      product.price = price
+
+      const updatedProduct = await product.save()
+      res.json(updatedProduct)
+    } else {
+      res.status(401)
+      throw new Error('Only owner or admin can update a product')
+    }
+  } else {
+    res.status(404)
+    throw new Error('Product not found')
+  }
+})
+
 export {
   getProducts,
   getMyProducts,
@@ -85,4 +136,6 @@ export {
   getProductById,
   getSellerDetails,
   deleteProduct,
+  createProduct,
+  updateProduct,
 }
