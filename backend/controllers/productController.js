@@ -108,7 +108,7 @@ const updateProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id)
 
   if (product) {
-    if (product.user.equals(req.user._is) || req.user.isAdmin) {
+    if (product.user.equals(req.user._id) || req.user.isAdmin) {
       product.address = address
       product.location = location
       product.name = name

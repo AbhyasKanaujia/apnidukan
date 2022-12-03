@@ -6,8 +6,10 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { getUserDetails, updateUser } from '../actions/userActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import { listProductDetails } from '../actions/productActions'
 import { Map, Marker } from 'pigeon-maps'
+
+import { listProductDetails, updateProduct } from '../actions/productActions'
+import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
 
 const ProductEditScreen = () => {
   const [name, setName] = useState('')
@@ -26,37 +28,62 @@ const ProductEditScreen = () => {
   const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
 
+  const productUpdate = useSelector((state) => state.productUpdate)
+  const {
+    loading: loadingUpdate,
+    error: errorUpdate,
+    success: successUpdate,
+  } = productUpdate
+
   const navigate = useNavigate()
   const params = useParams()
 
   const productId = params.id
 
   useEffect(() => {
-    if (!product.name || product._id !== productId) {
-      dispatch(listProductDetails(productId))
+    if (successUpdate) {
+      dispatch({ type: PRODUCT_UPDATE_RESET })
+      navigate('/profile')
     } else {
-      setName(product.name)
-      setAddress(product.address)
-      setLocation(product.location)
-      setImage(product.image)
-      setCategory(product.category)
-      setDescription(product.description)
-      setPrice(product.price)
+      if (!product.name || product._id !== productId) {
+        dispatch(listProductDetails(productId))
+      } else {
+        setName(product.name)
+        setAddress(product.address)
+        setLocation(product.location)
+        setImage(product.image)
+        setCategory(product.category)
+        setDescription(product.description)
+        setPrice(product.price)
+      }
     }
-  }, [dispatch, productId, product])
+  }, [dispatch, productId, product, successUpdate])
 
   const submitHandler = (e) => {
     e.preventDefault()
-    // UPDATE PRODUCT
+    dispatch(
+      updateProduct({
+        _id: productId,
+        name,
+        address,
+        location,
+        image,
+        category,
+        description,
+        price,
+      })
+    )
   }
 
   return (
     <>
-      <Link to="/admin/productlist" className="btn btn-light my-3">
+      <Link to="/profile" className="btn btn-light my-3">
         Go Back
       </Link>
       <FormContainer>
         <h1>Edit Product</h1>
+        {loadingUpdate && <Loader />}
+        {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
         {loading ? (
           <Loader />
         ) : error ? (

@@ -10,6 +10,7 @@ import {
   sellerDetailsReducer,
   productListMyReducer,
   productDeleteReducer,
+  productUpdateReducer,
 } from './reducers/productReducers'
 import {
   userLocationReducer,
@@ -25,6 +26,7 @@ const reducer = combineReducers({
   productListNearby: productListNearbyReducer,
   productDetails: productDetailsReducer,
   productCreate: productCreateReducer,
+  productUpdate: productUpdateReducer,
   productDelete: productDeleteReducer,
   userLogin: userLoginReducer,
   sellerDetails: sellerDetailsReducer,
