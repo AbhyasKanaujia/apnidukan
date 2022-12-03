@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Row, Col, Table } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
-import { deleteProduct } from '../actions/productActions'
-import { getUserLocation, getUserDetails } from '../actions/userActions'
-import { getMyProducts } from '../actions/productActions'
 import { Map, Marker } from 'pigeon-maps'
 import { LinkContainer } from 'react-router-bootstrap'
+
+import { getUserLocation, getUserDetails } from '../actions/userActions'
+import {
+  getMyProducts,
+  deleteProduct,
+  createProduct,
+} from '../actions/productActions'
 
 import Loader from '../components/Loader'
 import Message from '../components/Message'
@@ -34,6 +38,14 @@ const ProfileScreen = () => {
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
   const { success } = userUpdateProfile
+
+  const productCreate = useSelector((state) => state.productCreate)
+  const {
+    loading: loadingCreate,
+    error: errorCreate,
+    success: successCreate,
+    product: createdProduct,
+  } = productCreate
 
   const productDelete = useSelector((state) => state.productDelete)
   const {
@@ -75,6 +87,12 @@ const ProfileScreen = () => {
     }
   }, [dispatch, userInfo, navigate, user, success, successDelete])
 
+  useEffect(() => {
+    if (successCreate) {
+      navigate(`/admin/product/${createdProduct._id}/edit`)
+    }
+  }, [successCreate])
+
   const submitHandler = (e) => {
     e.preventDefault()
     if (password !== confirmPassword) setMessage('Passwords do not match')
@@ -90,7 +108,7 @@ const ProfileScreen = () => {
   }
 
   const createProductHandler = (product) => {
-    //  CREATE PRODUCT
+    dispatch(createProduct())
   }
 
   return (
@@ -215,6 +233,8 @@ const ProfileScreen = () => {
         </Row>
         {loadingDelete && <Loader />}
         {errorDelete && <Message variant="danger">{errorDelete}</Message>}
+        {loadingCreate && <Loader />}
+        {errorCreate && <Message variant="danger">{errorCreate}</Message>}
         {loading ? (
           <Loader />
         ) : error ? (
