@@ -9,6 +9,7 @@ import HomeScreen from './screens/HomeScreen'
 import ProductScreen from './screens/ProductScreen'
 import LoginScreen from './screens/LoginScreen'
 import ProfileScreen from './screens/ProfileScreen'
+import ProductEditScreen from './screens/ProductEditScreen'
 
 const App = () => {
   return (
@@ -23,6 +24,10 @@ const App = () => {
             <Route path="/profile" element={<ProfileScreen />} />
             userRegister: userRegisterReducer,
             <Route path="/product/:id" element={<ProductScreen />} />
+            <Route
+              path="/admin/product/:id/edit"
+              element={<ProductEditScreen />}
+            />
           </Routes>
         </Container>
       </main>
