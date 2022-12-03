@@ -111,8 +111,8 @@ const RegisterScreen = () => {
                 height={300}
                 defaultCenter={coordinates}
                 onBoundsChanged={({ center }) => {
-                  setLongitude(center[1])
-                  setLatitude(center[0])
+                  setLongitude(center[0])
+                  setLatitude(center[1])
                 }}
               >
                 <Marker />

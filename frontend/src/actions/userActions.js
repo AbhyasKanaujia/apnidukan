@@ -196,7 +196,7 @@ export const getUserLocation = () => (dispatch) => {
       (position) => {
         dispatch({
           type: USER_LOCATION_SUCCESS,
-          payload: [position.coords.latitude, position.coords.longitude],
+          payload: [position.coords.longitude, position.coords.latitude],
         })
       },
       (e) => {

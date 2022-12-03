@@ -63,7 +63,7 @@ const getNearbyProducts = asyncHandler(async (req, res) => {
       },
     },
   }
-  const products = await Product.find(query).sort({ location: 1 })
+  const products = await Product.find(query).sort('-score')
   res.json(products)
 })
 
