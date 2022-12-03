@@ -26,8 +26,8 @@ const ProfileScreen = () => {
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
   const [address, setAddress] = useState('')
-  const [latitude, setLatitude] = useState(0)
   const [longitude, setLongitude] = useState(0)
+  const [latitude, setLatitude] = useState(0)
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [message, setMessage] = useState(null)
@@ -94,8 +94,8 @@ const ProfileScreen = () => {
       setPhone(user.phone)
       setEmail(user.email)
       setAddress(user.address)
-      setLatitude(user.location.coordinates[0])
-      setLongitude(user.location.coordinates[1])
+      setLongitude(user.location.coordinates[0])
+      setLatitude(user.location.coordinates[1])
     }
   }, [user])
 
@@ -119,7 +119,7 @@ const ProfileScreen = () => {
           address,
           location: {
             type: 'Point',
-            coordinates: [latitude, longitude],
+            coordinates: [longitude, latitude],
           },
           password,
         })
@@ -200,8 +200,8 @@ const ProfileScreen = () => {
                   height={300}
                   defaultCenter={coordinates}
                   onBoundsChanged={({ center }) => {
-                    setLatitude(center[0])
-                    setLongitude(center[1])
+                    setLongitude(center[0])
+                    setLatitude(center[1])
                   }}
                 >
                   <Marker />
@@ -209,7 +209,7 @@ const ProfileScreen = () => {
               )
             )}
             <Form.Text>
-              Latitude: {latitude} Longitude: {longitude}
+              Longitude: {longitude} Latitude: {latitude}
             </Form.Text>
             <br />
             <Button

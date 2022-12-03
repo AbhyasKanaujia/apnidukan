@@ -140,7 +140,7 @@ const ProductScreen = () => {
                         />
                         <Marker
                           width={50}
-                          anchor={seller.location.coordinates}
+                          anchor={product.location.coordinates}
                         />
                       </Map>
                     </>

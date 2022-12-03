@@ -16,7 +16,6 @@ import {
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
-  
 } from '../constants/userConstants'
 
 export const login = (email, password) => async (dispatch) => {
@@ -103,7 +102,7 @@ export const logout = () => (dispatch) => {
 }
 
 export const register =
-  (name, phone, email, address, latitude, longitude, password) =>
+  (name, phone, email, address, longitude, latitude, password) =>
   async (dispatch) => {
     try {
       dispatch({
@@ -123,7 +122,7 @@ export const register =
           phone,
           email,
           address,
-          location: { type: 'Point', coordinates: [latitude, longitude] },
+          location: { type: 'Point', coordinates: [longitude, latitude] },
           password,
         },
         config
@@ -197,7 +196,7 @@ export const getUserLocation = () => (dispatch) => {
       (position) => {
         dispatch({
           type: USER_LOCATION_SUCCESS,
-          payload: [position.coords.latitude, position.coords.longitude],
+          payload: [position.coords.longitude, position.coords.latitude],
         })
       },
       (e) => {

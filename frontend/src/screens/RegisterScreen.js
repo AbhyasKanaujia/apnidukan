@@ -47,7 +47,7 @@ const RegisterScreen = () => {
     if (password !== confirmPassword) setMessage('Passwords do not match')
     else
       dispatch(
-        register(name, phone, email, address, latitude, longitude, password)
+        register(name, phone, email, address, longitude, latitude, password)
       )
   }
 
@@ -98,7 +98,7 @@ const RegisterScreen = () => {
             onChange={(e) => setAddress(e.target.value)}
           ></Form.Control>
         </Form.Group>
-        
+
         <Form.Group>
           <Form.Label>Location</Form.Label>
           {loadingLocation ? (
@@ -111,8 +111,8 @@ const RegisterScreen = () => {
                 height={300}
                 defaultCenter={coordinates}
                 onBoundsChanged={({ center }) => {
-                  setLatitude(center[0])
-                  setLongitude(center[1])
+                  setLongitude(center[0])
+                  setLatitude(center[1])
                 }}
               >
                 <Marker />
@@ -120,7 +120,7 @@ const RegisterScreen = () => {
             )
           )}
           <Form.Text>
-            Latitude: {latitude} Longitude: {longitude}
+            Longitude: {longitude} Latitude: {latitude}
           </Form.Text>
           <br />
           <Button
