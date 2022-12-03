@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import FormContainer from '../components/FormContainer'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Form } from 'react-bootstrap'
+import { Button, Col, Form, Row } from 'react-bootstrap'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import UploadWidget from '../components/UploadWidget'
 import { Map, Marker } from 'pigeon-maps'
 import axios from 'axios'
 
@@ -189,16 +190,11 @@ const ProductEditScreen = ({ services }) => {
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
               ></Form.Control>
-
-              <Form.Control
-                type="file"
-                id="image-file"
-                label="Choose File"
-                onChange={uploadFileHandler}
-              />
+              <div className="my-2">
+                <UploadWidget setUrl={setImage} />
+              </div>
               {uploading && <Loader />}
             </Form.Group>
-
             <Form.Group className="py-1" controlId="category">
               <Form.Label>Category</Form.Label>
               <Form.Control

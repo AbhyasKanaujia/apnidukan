@@ -63,7 +63,6 @@ const getNearbyProducts = asyncHandler(async (req, res) => {
       },
     },
   }
-  console.log(query)
   const products = await Product.find(query)
   res.json(products)
 })
