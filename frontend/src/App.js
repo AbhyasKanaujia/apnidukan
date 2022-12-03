@@ -20,10 +20,11 @@ const App = () => {
           <Routes>
             <Route path="/" element={<HomeScreen />} exact />
             <Route path="/login" element={<LoginScreen />} />
-            <Route path="/register" element={<RegisterScreen />} />{' '}
+            <Route path="/register" element={<RegisterScreen />} />
             <Route path="/profile" element={<ProfileScreen />} />
             userRegister: userRegisterReducer,
             <Route path="/product/:id" element={<ProductScreen />} />
+            <Route path="/search/:keyword" element={<HomeScreen />} />
             <Route
               path="/admin/product/:id/edit"
               element={<ProductEditScreen />}

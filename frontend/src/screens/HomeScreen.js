@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Col, Row } from 'react-bootstrap'
+import { useParams } from 'react-router-dom'
 
 import { listNearbyProducts } from '../actions/productActions'
 
@@ -10,6 +11,9 @@ import Product from '../components/Product'
 
 const HomeScreen = () => {
   const dispatch = useDispatch()
+  const params = useParams()
+
+  const keyword = params.keyword
 
   const productListNearby = useSelector((state) => state.productListNearby)
   const { loading, products, error } = productListNearby
@@ -19,8 +23,8 @@ const HomeScreen = () => {
   //    get all products from backend asynchronously
   //    update products state in redux
   useEffect(() => {
-    dispatch(listNearbyProducts())
-  }, [dispatch])
+    dispatch(listNearbyProducts(keyword))
+  }, [dispatch, keyword])
 
   return (
     <>
