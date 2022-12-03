@@ -58,10 +58,31 @@ const getSellerDetails = asyncHandler(async (req, res) => {
   }
 })
 
+// @desc    Delete a product
+// @route   DELETE /api/products/:id
+// @access  Private/Admin
+const deleteProduct = asyncHandler(async (req, res) => {
+  const product = await Product.findById(req.params.id)
+
+  if (product) {
+    if (product.user.equals(req.user._id) || req.user.isAdmin) {
+      await product.remove()
+      res.json({ message: 'Product removed' })
+    } else {
+      res.status(401)
+      throw new Error('Only owner or admin can delete a product')
+    }
+  } else {
+    res.status(404)
+    throw new Error('Product not found')
+  }
+})
+
 export {
   getProducts,
   getMyProducts,
   getNearbyProducts,
   getProductById,
   getSellerDetails,
+  deleteProduct,
 }

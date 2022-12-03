@@ -9,6 +9,7 @@ import {
   getProductById,
   getSellerDetails,
   getMyProducts,
+  deleteProduct,
 } from '../controllers/productController.js'
 
 import { protect } from '../middleware/authMiddleware.js'
@@ -31,7 +32,7 @@ router.get('/nearby', getNearbyProducts)
 // @desc   Fetch a single products
 // @route  GET /api/products/:id
 // @access Public
-router.get('/:id', getProductById)
+router.route('/:id').get(getProductById).delete(protect, deleteProduct)
 router.get('/:id/seller', getSellerDetails)
 
 export default router

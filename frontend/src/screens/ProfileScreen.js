@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Row, Col, Table } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
+import { deleteProduct } from '../actions/productActions'
 import { getUserLocation, getUserDetails } from '../actions/userActions'
 import { getMyProducts } from '../actions/productActions'
 import { Map, Marker } from 'pigeon-maps'
@@ -34,6 +35,13 @@ const ProfileScreen = () => {
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
   const { success } = userUpdateProfile
 
+  const productDelete = useSelector((state) => state.productDelete)
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = productDelete
+
   const userLocation = useSelector((state) => state.userLocation)
   const {
     loading: loadingLocation,
@@ -65,7 +73,7 @@ const ProfileScreen = () => {
       }
       dispatch(getMyProducts())
     }
-  }, [dispatch, userInfo, navigate, user, success])
+  }, [dispatch, userInfo, navigate, user, success, successDelete])
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -73,6 +81,16 @@ const ProfileScreen = () => {
     else {
       // DISPATCH UPDATE PROFILE
     }
+  }
+
+  const deleteHandler = (id) => {
+    if (window.confirm('Are you sure')) {
+      dispatch(deleteProduct(id))
+    }
+  }
+
+  const createProductHandler = (product) => {
+    //  CREATE PRODUCT
   }
 
   return (
@@ -190,25 +208,25 @@ const ProfileScreen = () => {
             <h1>Proucts</h1>
           </Col>
           <Col className="text-right">
-            Craete product button
-            {/* <Button className="my-3" onClick={createProductHandler}>
+            <Button className="my-3" onClick={createProductHandler}>
               <i className="fas fa-plus"></i> Create Product
-            </Button> */}
+            </Button>
           </Col>
         </Row>
+        {loadingDelete && <Loader />}
+        {errorDelete && <Message variant="danger">{errorDelete}</Message>}
         {loading ? (
           <Loader />
         ) : error ? (
           <Message variant="danger">{error}</Message>
         ) : (
-          <Table striped hover responsive className="table-sm">
+          <Table hover responsive className="table-sm">
             <thead>
               <tr>
                 <th>ID</th>
                 <th>NAME</th>
                 <th>PRICE</th>
                 <th>CATEGORY</th>
-                <th>BRAND</th>
                 <th></th>
               </tr>
             </thead>
@@ -219,21 +237,22 @@ const ProfileScreen = () => {
                   <td>{product.name}</td>
                   <td>$ {product.price}</td>
                   <td>{product.category}</td>
-                  <td>{product.brand}</td>
                   <td>
-                    <LinkContainer to={`/admin/product/${product._id}/edit`}>
+                    <LinkContainer
+                      className="mx-2"
+                      to={`/admin/product/${product._id}/edit`}
+                    >
                       <Button variant="light" className="btn-sm">
                         <i className="fas fa-edit"></i>
                       </Button>
                     </LinkContainer>
-                    Delete Button
-                    {/* <Button
+                    <Button
                       variant="danger"
-                      className="btn-sm"
+                      className="btn-sm mx-2"
                       onClick={() => deleteHandler(product._id)}
-                    > 
+                    >
                       <i className="fas fa-trash"></i>
-                    </Button>*/}
+                    </Button>
                   </td>
                 </tr>
               ))}
