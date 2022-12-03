@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Map, Marker } from 'pigeon-maps'
@@ -14,6 +14,7 @@ const ProductScreen = () => {
   // get id from URL
   const id = useParams().id
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
@@ -22,13 +23,18 @@ const ProductScreen = () => {
   const { loading: loadingSeller, error: errorSeller, seller } = sellerDetails
 
   const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
 
   // on: page load
   // do:
   //      get a single product by id from backend asynchronously
   //      update product state
   useEffect(() => {
-    dispatch(listProductDetails(id))
+    if (userInfo) {
+      dispatch(listProductDetails(id))
+    } else {
+      navigate('/login')
+    }
   }, [dispatch, id])
 
   useEffect(() => {
