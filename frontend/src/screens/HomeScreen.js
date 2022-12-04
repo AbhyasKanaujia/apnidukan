@@ -12,7 +12,7 @@ import Loader from '../components/Loader'
 import Product from '../components/Product'
 import Filter from '../components/Filter'
 
-const HomeScreen = ({ services, ranges }) => {
+const HomeScreen = ({ services }) => {
   const dispatch = useDispatch()
   const params = useParams()
   const navigate = useNavigate()
@@ -20,7 +20,7 @@ const HomeScreen = ({ services, ranges }) => {
   const keyword = params.keyword
 
   const [category, setCategory] = useState(services[0])
-  const [maxDistance, setMaxDistance] = useState(ranges[3])
+  const [maxDistance, setMaxDistance] = useState(10)
   const [debouncedMaxDistance] = useDebounce(maxDistance, 1000)
 
   const productListNearby = useSelector((state) => state.productListNearby)
@@ -47,7 +47,6 @@ const HomeScreen = ({ services, ranges }) => {
       <div className="d-flex justify-content-between flex-wrap align-center">
         <Filter
           services={services}
-          ranges={ranges}
           category={category}
           setCategory={setCategory}
           maxDistance={maxDistance}

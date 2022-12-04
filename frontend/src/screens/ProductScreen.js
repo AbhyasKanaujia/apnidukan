@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Map, Marker } from 'pigeon-maps'
+import haversine from 'haversine-distance'
 
 import Loader from '../components/Loader'
 import Message from '../components/Message'
@@ -58,7 +59,7 @@ const ProductScreen = () => {
         <Message variant="danger">{error}</Message>
       ) : (
         <Row>
-          <Col md={6}>
+          <Col md={6} className="text-center">
             <Image src={product.image} alt={product.name} fluid />
           </Col>
           <Col md={3}>
@@ -70,34 +71,33 @@ const ProductScreen = () => {
               <ListGroup.Item>
                 Description: {product.description}
               </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Price</Col>
+                  <Col>
+                    <strong>₹{product.price}</strong>
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                <Row>
+                  <Col>Seller</Col>
+                  <Col>{product.seller}</Col>
+                </Row>
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                <Row>
+                  <Col>Seller Address</Col>
+                  <Col>{product.address}</Col>
+                </Row>
+              </ListGroup.Item>
             </ListGroup>
           </Col>
           <Col md={3}>
             <Card>
               <ListGroup variant="flush">
-                <ListGroup.Item>
-                  <Row>
-                    <Col>Price</Col>
-                    <Col>
-                      <strong>₹{product.price}</strong>
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-
-                <ListGroup.Item>
-                  <Row>
-                    <Col>Seller</Col>
-                    <Col>{product.seller}</Col>
-                  </Row>
-                </ListGroup.Item>
-
-                <ListGroup.Item>
-                  <Row>
-                    <Col>Seller Address</Col>
-                    <Col>{product.address}</Col>
-                  </Row>
-                </ListGroup.Item>
-
                 <ListGroup.Item>
                   <Row>
                     <Button
@@ -109,42 +109,89 @@ const ProductScreen = () => {
                     </Button>
                   </Row>
                 </ListGroup.Item>
-                {showDetails &&
-                  seller &&
-                  (loadingSeller ? (
-                    <Loader />
-                  ) : errorSeller ? (
-                    <Message variant="danger">{errorSeller}</Message>
-                  ) : (
-                    <>
-                      <ListGroup.Item>
-                        <Row>
-                          <Col>Phone Number</Col>
-                          <Col>{seller.phone}</Col>
-                        </Row>
-                      </ListGroup.Item>
-                      <ListGroup.Item>
-                        <Row>
-                          <Col>Email Address</Col>
-                          <Col>{seller.email}</Col>
-                        </Row>
-                      </ListGroup.Item>
-                      <Map
-                        height={300}
-                        defaultCenter={seller.location.coordinates}
-                        defaultZoom={11}
-                      >
-                        <Marker
-                          width={50}
-                          anchor={seller.location.coordinates}
-                        />
-                        <Marker
-                          width={50}
-                          anchor={seller.location.coordinates}
-                        />
-                      </Map>
-                    </>
-                  ))}
+                <ListGroup.Item>
+                  {showDetails &&
+                    seller &&
+                    (loadingSeller ? (
+                      <Loader />
+                    ) : errorSeller ? (
+                      <Message variant="danger">{errorSeller}</Message>
+                    ) : (
+                      <>
+                        <ListGroup.Item>
+                          <Row>
+                            <Col>Distance</Col>
+                            <Col>
+                              {(
+                                haversine(
+                                  product.location.coordinates,
+                                  userInfo.location.coordinates
+                                ) / 1000
+                              ).toFixed(2)}{' '}
+                              KM
+                            </Col>
+                          </Row>
+                        </ListGroup.Item>
+                        <ListGroup.Item>
+                          <Row>
+                            <Col>Phone Number</Col>
+                            <Col>{seller.phone}</Col>
+                          </Row>
+                        </ListGroup.Item>
+                        <ListGroup.Item>
+                          <Row>
+                            <Col>Email Address</Col>
+                            <Col>{seller.email}</Col>
+                          </Row>
+                        </ListGroup.Item>
+                        <Map
+                          height={300}
+                          center={[
+                            product.location.coordinates[1],
+                            product.location.coordinates[0],
+                          ]}
+                          defaultZoom={11}
+                        >
+                          <Marker
+                            color="#485785"
+                            width={50}
+                            anchor={[
+                              product.location.coordinates[1],
+                              product.location.coordinates[0],
+                            ]}
+                          />
+                          <Marker
+                            color="#7b8ab8"
+                            width={50}
+                            anchor={[
+                              userInfo.location.coordinates[1],
+                              userInfo.location.coordinates[0],
+                            ]}
+                          />
+                        </Map>
+                        <span
+                          style={{
+                            height: '1rem',
+                            width: '1rem',
+                            display: 'inline-block',
+                            backgroundColor: '#485785',
+                          }}
+                        ></span>
+                        <span style={{ color: '#485785' }}> {seller.name}</span>
+                        <br />
+
+                        <span
+                          style={{
+                            height: '1rem',
+                            width: '1rem',
+                            display: 'inline-block',
+                            backgroundColor: '#7b8ab8',
+                          }}
+                        ></span>
+                        <span style={{ color: '#7b8ab8' }}> You</span>
+                      </>
+                    ))}
+                </ListGroup.Item>
               </ListGroup>
             </Card>
           </Col>

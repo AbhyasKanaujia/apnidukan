@@ -9,16 +9,6 @@ const Filter = ({
   maxDistance,
   setMaxDistance,
 }) => {
-  const [rangeIndex, setRangeIndex] = useState(3)
-
-  const updateRange = (e) => {
-    setRangeIndex(e.target.value)
-  }
-
-  useEffect(() => {
-    setMaxDistance(ranges[rangeIndex])
-  }, [rangeIndex, setMaxDistance, ranges])
-
   return (
     <>
       <Tabs
@@ -40,11 +30,11 @@ const Filter = ({
         Range: {maxDistance} KM
         <Form.Range
           min={0}
-          max={ranges.length - 1}
+          max={100}
           step={1}
-          value={rangeIndex}
-          onChange={(e) => updateRange(e)}
-        ></Form.Range>
+          value={maxDistance}
+          onChange={(e) => setMaxDistance(e.target.value)}
+        />
       </div>
     </>
   )

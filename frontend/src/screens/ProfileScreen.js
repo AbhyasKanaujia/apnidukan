@@ -26,8 +26,10 @@ const ProfileScreen = () => {
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
   const [address, setAddress] = useState('')
-  const [latitude, setLatitude] = useState(0)
-  const [longitude, setLongitude] = useState(0)
+  const [location, setLocation] = useState({
+    type: 'Point',
+    coordinates: [85, 25],
+  })
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [message, setMessage] = useState(null)
@@ -94,10 +96,22 @@ const ProfileScreen = () => {
       setPhone(user.phone)
       setEmail(user.email)
       setAddress(user.address)
-      setLatitude(user.location.coordinates[0])
-      setLongitude(user.location.coordinates[1])
+      setLocation(user.location)
     }
   }, [user])
+
+  useEffect(() => {
+    if (coordinates) {
+      setLocation({
+        type: 'Point',
+        coordinates: [coordinates[1], coordinates[0]],
+      })
+    }
+  }, [coordinates])
+
+  useEffect(() => {
+    console.log(location)
+  }, [location])
 
   useEffect(() => {
     if (successCreate) {
@@ -117,10 +131,7 @@ const ProfileScreen = () => {
           phone,
           email,
           address,
-          location: {
-            type: 'Point',
-            coordinates: [latitude, longitude],
-          },
+          location,
           password,
         })
       )
@@ -190,26 +201,25 @@ const ProfileScreen = () => {
 
           <Form.Group>
             <Form.Label>Location</Form.Label>
-            {loadingLocation ? (
-              <Loader />
-            ) : errorLocation ? (
+            {loadingLocation && <Loader />}
+            {errorLocation && (
               <Message variant="danger">{errorLocation}</Message>
-            ) : (
-              coordinates && (
-                <Map
-                  height={300}
-                  defaultCenter={coordinates}
-                  onBoundsChanged={({ center }) => {
-                    setLatitude(center[0])
-                    setLongitude(center[1])
-                  }}
-                >
-                  <Marker />
-                </Map>
-              )
             )}
+            <Map
+              height={300}
+              center={[location.coordinates[1], location.coordinates[0]]}
+              onBoundsChanged={({ center }) => {
+                setLocation({
+                  type: 'Point',
+                  coordinates: [center[1], center[0]],
+                })
+              }}
+            >
+              <Marker />
+            </Map>
             <Form.Text>
-              Latitude: {latitude} Longitude: {longitude}
+              Latitude: {location.coordinates[1]} Longitude:{' '}
+              {location.coordinates[0]}
             </Form.Text>
             <br />
             <Button

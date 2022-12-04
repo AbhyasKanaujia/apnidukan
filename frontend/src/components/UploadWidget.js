@@ -13,7 +13,6 @@ const UploadWidget = ({ setUrl }) => {
         sources: ['local', 'url', 'camera'],
       },
       (error, result) => {
-        console.log(result)
         if (result.event === 'success') {
           setUrl(result.info.secure_url)
           widgetRef.close()

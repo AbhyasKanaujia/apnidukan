@@ -10,6 +10,7 @@ import { Map, Marker } from 'pigeon-maps'
 import axios from 'axios'
 
 import { listProductDetails, updateProduct } from '../actions/productActions'
+import { getUserLocation } from '../actions/userActions'
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
 
 const ProductEditScreen = ({ services }) => {
@@ -29,6 +30,13 @@ const ProductEditScreen = ({ services }) => {
 
   const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
+
+  const userLocation = useSelector((state) => state.userLocation)
+  const {
+    loading: loadingLocation,
+    error: errorLocation,
+    coordinates,
+  } = userLocation
 
   const productUpdate = useSelector((state) => state.productUpdate)
   const {
@@ -60,6 +68,15 @@ const ProductEditScreen = ({ services }) => {
       }
     }
   }, [dispatch, productId, product, successUpdate, navigate])
+
+  useEffect(() => {
+    if (coordinates) {
+      setLocation({
+        type: 'Point',
+        coordinates: [coordinates[1], coordinates[0]],
+      })
+    }
+  }, [coordinates])
 
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0]
@@ -140,23 +157,34 @@ const ProductEditScreen = ({ services }) => {
               product &&
               product.location && (
                 <Form.Group>
-                  <Form.Label>Location</Form.Label>
+                  {loadingLocation && <Loader />}
+                  {errorLocation && (
+                    <Message variant="danger">{errorLocation}</Message>
+                  )}
                   <Map
                     height={300}
-                    defaultCenter={product.location.coordinates}
+                    center={[location.coordinates[1], location.coordinates[0]]}
                     onBoundsChanged={({ center }) => {
                       setLocation({
                         type: 'Point',
-                        coordinates: [center[0], center[1]],
+                        coordinates: [center[1], center[0]],
                       })
                     }}
                   >
                     <Marker />
                   </Map>
                   <Form.Text>
-                    Latitude: {location.coordinates[0]} Longitude:
-                    {location.coordinates[1]}
+                    Latitude: {location.coordinates[1]} Longitude:{' '}
+                    {location.coordinates[0]}
                   </Form.Text>
+                  <br />
+                  <Button
+                    className="my-3"
+                    variant="primary"
+                    onClick={() => dispatch(getUserLocation())}
+                  >
+                    Detect Location
+                  </Button>
                 </Form.Group>
               )
             )}

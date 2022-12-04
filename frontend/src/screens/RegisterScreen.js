@@ -14,8 +14,10 @@ const RegisterScreen = () => {
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
   const [address, setAddress] = useState('')
-  const [latitude, setLatitude] = useState(0)
-  const [longitude, setLongitude] = useState(0)
+  const [formLocation, setFormLocation] = useState({
+    type: 'Point',
+    coordinates: [85, 25],
+  })
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [message, setMessage] = useState(null)
@@ -42,13 +44,19 @@ const RegisterScreen = () => {
     }
   }, [redirect, userInfo, navigate])
 
+  useEffect(() => {
+    if (coordinates && coordinates.length == 2) {
+      setFormLocation({
+        type: 'Point',
+        coordinates: [coordinates[1], coordinates[0]],
+      })
+    }
+  }, [coordinates])
+
   const submitHandler = (e) => {
     e.preventDefault()
     if (password !== confirmPassword) setMessage('Passwords do not match')
-    else
-      dispatch(
-        register(name, phone, email, address, latitude, longitude, password)
-      )
+    else dispatch(register(name, phone, email, address, formLocation, password))
   }
 
   return (
@@ -98,29 +106,26 @@ const RegisterScreen = () => {
             onChange={(e) => setAddress(e.target.value)}
           ></Form.Control>
         </Form.Group>
-        
+
         <Form.Group>
           <Form.Label>Location</Form.Label>
-          {loadingLocation ? (
-            <Loader />
-          ) : errorLocation ? (
-            <Message variant="danger">{errorLocation}</Message>
-          ) : (
-            coordinates && (
-              <Map
-                height={300}
-                defaultCenter={coordinates}
-                onBoundsChanged={({ center }) => {
-                  setLatitude(center[0])
-                  setLongitude(center[1])
-                }}
-              >
-                <Marker />
-              </Map>
-            )
-          )}
+          {loadingLocation && <Loader />}
+          {errorLocation && <Message variant="danger">{errorLocation}</Message>}
+          <Map
+            height={300}
+            center={[formLocation.coordinates[1], formLocation.coordinates[0]]}
+            onBoundsChanged={({ center }) => {
+              setFormLocation({
+                type: 'Point',
+                coordinates: [center[1], center[0]],
+              })
+            }}
+          >
+            <Marker />
+          </Map>
           <Form.Text>
-            Latitude: {latitude} Longitude: {longitude}
+            Latitude: {formLocation.coordinates[1]} Longitude:{' '}
+            {formLocation.coordinates[0]}
           </Form.Text>
           <br />
           <Button
